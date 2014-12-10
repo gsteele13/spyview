@@ -10,7 +10,7 @@ EXTRA_PROGRAMS = spyview_console spybrowse_console
 gp_to_mat_SOURCES = gp_to_mat.C
 
 ns2pgm_SOURCES = ns2pgm.c
-ns2pgm_LDFLAGS = -mwindows -mconsole
+ns2pgm_LDFLAGS = @WIN32_CONSOLE_FLAGS@
 
 spypal_SOURCES=spypal.C spypal_wizard.C cclass.C spypal_gradient.C Fl_Table.C message.C spypal_interface.C FLTK_Serialization.C  spypal_import.C
 spypal_CXXFLAGS=-DSPYPAL_STANDALONE
@@ -37,10 +37,10 @@ imagedata_code = ImageData.H ImageData.C message.C misc.C
 test_imagedata_SOURCES = test_imagedata.C $(imagedata_code)
 
 spyview_console_SOURCES = $(spyview_SOURCES)
-spyview_console_LDFLAGS = -mwindows -mconsole
+spyview_console_LDFLAGS = @WIN32_CONSOLE_FLAGS@
 
 spybrowse_console_SOURCES = $(spybrowse_SOURCES)
-spybrowse_console_LDFLAGS = -mwindows -mconsole
+spybrowse_console_LDFLAGS = @WIN32_CONSOLE_FLAGS@
 
 spybrowse_SOURCES = spybrowse_ui.fl spybrowse.C spybrowse.h message.C \
 			spybrowse_ui.C spybrowse_ui.h Fl_Table.C Fl_Listbox.C
