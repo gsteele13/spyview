@@ -1,0 +1,21 @@
+#!/usr/bin/gawk -f
+# Rotate the commetn fields of a ppm file CCw.
+BEGIN {
+  fname=argv[0];
+}
+
+/^#x(.*)/ {
+  gsub(/^#xmin/,"#ymin");
+  gsub(/^#xmax/,"#ymax");
+  print;
+  next;
+}
+/^#y(.*)/ {
+  gsub(/^#ymin/,"#xmax");
+  gsub(/^#ymax/,"#xmin");
+  print;
+  next;
+}
+/^#/ {
+  print;
+}

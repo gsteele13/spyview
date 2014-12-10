@@ -1,0 +1,19 @@
+otool -L 
+
+list the libraries a program is linked against
+
+probably best idea is to somehow make spyview an ".app" bundle that includes a private framework:
+
+http://developer.apple.com/library/mac/#documentation/MacOSX/Conceptual/BPFrameworks/Tasks/CreatingFrameworks.html
+
+Problem with static linking: Mac won't let you make completely
+statically linked binaries, and will not make mixed linking binaries
+(like is possible in linux?)
+
+However, one possibility is to make a .app bundle, including the
+required dynamic libraries. A way to do this without switching over to
+an Xcode build environment is outlined here:
+
+http://stackoverflow.com/questions/1596945/building-osx-app-bundle
+
+Maybe some day I'll try it...

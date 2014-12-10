@@ -1,0 +1,8 @@
+makemap(jet(256), 'matlabjet.ppm')
+makemap(bone(256), 'matlabbone.ppm')
+makemap(pink(256), 'matlabpink.ppm')
+makemap(autumn(256), 'matlabautumn.ppm')
+makemap(copper(256), 'matlabcopper.ppm')
+makemap(spring(256), 'matlabspring.ppm')
+makemap(summer(256), 'matlabsummer.ppm')
+makemap(winter(256), 'matlabwinter.ppm')

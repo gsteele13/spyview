@@ -1,0 +1,12 @@
+Source: spyview
+Section: unknown
+Priority: optional
+Maintainer: Gary Steele <gsteele@electron.mit.edu>
+Build-Depends: debhelper (>> 4.0.0)
+Standards-Version: 3.5.8
+
+Package: spyview
+Architecture: any
+Depends: ${shlibs:Depends}, libgnuplot-i
+Description: spyview
+ spyview program

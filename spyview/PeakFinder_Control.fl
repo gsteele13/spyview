@@ -1,0 +1,222 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0107 
+header_name {.h} 
+code_name {.cxx}
+decl {\#include "ImageWindow.H"} {} 
+
+decl {\#include "PeakFinder.H"} {} 
+
+decl {\#include <FL/Fl_Color_Chooser.H>} {public
+} 
+
+decl {\#include <FL/Fl_File_Chooser.H>} {} 
+
+decl {class ImageWindow;} {public
+} 
+
+class PeakFinder_Control {open
+} {
+  decl {ImageWindow *iw;} {public
+  }
+  Function {PeakFinder_Control(ImageWindow *p_iw)} {open
+  } {
+    code {iw=p_iw;} {}
+    Fl_Window win {
+      label PeakFinder open
+      xywh {60 67 300 185} type Double visible
+    } {
+      Fl_Button {} {
+        label {Save peaks}
+        callback {iw->pf->save_peaks();}
+        tooltip {Save peaks to "basename.peaks"} xywh {205 110 90 20} labelsize 11
+      }
+      Fl_Button {} {
+        label dismiss
+        callback {win->hide();}
+        xywh {160 160 135 20} labelsize 11
+      }
+      Fl_Value_Input thresh {
+        label {Threshold:}
+        callback {iw->pf->threashold = thresh->value();
+slider->value(thresh->value());
+iw->pf->calculate();
+iw->damage(FL_DAMAGE_OVERLAY);
+iw->redraw_overlay();
+iw->plotLineCut();}
+        xywh {75 10 220 20} labelsize 12 when 8 maximum 1e+06 value 0.5 textsize 12
+      }
+      Fl_Light_Button plot_peaks {
+        label {Plot Peaks}
+        callback {iw->damage(FL_DAMAGE_OVERLAY);
+iw->redraw_overlay();
+iw->plotLineCut();}
+        xywh {5 85 85 20} labelsize 11
+      }
+      Fl_Button {} {
+        label Help
+        callback {if (helpwin->shown())
+	helpwin->hide();
+else
+	helpwin->show();}
+        xywh {215 135 80 20} labelsize 11
+      }
+      Fl_Light_Button plot_valleys {
+        label {Plot Valleys}
+        callback {iw->damage(FL_DAMAGE_OVERLAY);
+iw->redraw_overlay();
+iw->plotLineCut();}
+        xywh {5 110 85 20} labelsize 11
+      }
+      Fl_Roller slider {
+        callback {thresh->value(slider->value());
+thresh->do_callback();}
+        xywh {120 35 175 20} type Horizontal maximum 1e+06 step 0.01 value 0.5
+      }
+      Fl_Value_Input slider_step {
+        label {step size}
+        callback {slider->step(slider_step->value());}
+        xywh {55 35 65 20} labelsize 10 value 0.01 textsize 12
+      }
+      Fl_Light_Button recalc {
+        label Recalculate
+        callback {iw->pf->recalculate=recalc->value();
+thresh->do_callback();}
+        tooltip {Recalculate peak positions during load and after image processing} xywh {205 85 90 20} value 1 labelsize 11
+      }
+      Fl_Light_Button vmax_enable {
+        label {Valley max:}
+        callback {thresh->do_callback();}
+        tooltip {Set a maximum data value for an identified valley} xywh {5 60 85 20} labelsize 11
+      }
+      Fl_Value_Input valley_max {
+        callback {thresh->do_callback();}
+        xywh {95 60 50 20} when 8 value 10 textsize 12
+      }
+      Fl_Light_Button pmin_enable {
+        label {Peak min:}
+        callback {thresh->do_callback();}
+        tooltip {Set a minium data value for an identified valley} xywh {155 60 85 20} labelsize 11
+      }
+      Fl_Light_Button do_outliers {
+        label {Outlier Detection:}
+        callback {thresh->do_callback();}
+        tooltip {Remove outliers (isolated peaks)} xywh {5 135 125 20} labelsize 11
+      }
+      Fl_Spinner outlier_x {
+        label {X }
+        callback {thresh->do_callback();}
+        tooltip {Width of box for outlier rejection (pixels)} xywh {25 160 55 20} labelsize 12 textsize 12
+      }
+      Fl_Spinner outlier_y {
+        label Y
+        callback {thresh->do_callback();}
+        tooltip {Height of box for outlier rejection (pixels)} xywh {95 160 55 20} labelsize 12 textsize 12
+      }
+      Fl_Spinner outlier_num {
+        label {n }
+        callback {thresh->do_callback();}
+        tooltip {Number of other peaks in window needed for peak not to be an outlier} xywh {150 135 55 20} labelsize 12 textsize 12
+      }
+      Fl_Value_Input peak_min {
+        callback {thresh->do_callback();}
+        xywh {245 60 50 20} when 8 value 10 textsize 12
+      }
+      Fl_Button {} {
+        label {Toggle Data}
+        callback {static int peaks_on = 0;
+static int valleys_on = 0;
+
+if (hide_data->value())
+{
+	//Data is hidden: we should show the data and turn off any peaks
+	peaks_on = plot_peaks->value();
+	valleys_on = plot_valleys->value();
+	plot_peaks->value(0);
+	plot_valleys->value(0);
+	hide_data->value(0);
+}	
+else
+{
+	// Data is shown: turn off the data
+	// and if there are some internally saved peak settings
+	// that are currently turned off, then we should restore them.
+	if (!plot_peaks->value() && peaks_on)
+		plot_peaks->value(1);
+	if (!plot_valleys->value() && valleys_on)
+		plot_valleys->value(1);
+	hide_data->value(1);
+}
+
+hide_data->do_callback();}
+        tooltip {Save peaks to "basename.peaks"} xywh {120 110 80 20} labelsize 11
+      }
+      Fl_Light_Button hide_data {
+        label {Hide Data}
+        callback {iw->damage(FL_DAMAGE_OVERLAY);
+iw->redraw_overlay();}
+        xywh {120 85 80 20} labelsize 11
+      }
+      Fl_Button peak_color_box {
+        callback {if (colorwin->shown())
+	colorwin->hide();
+else
+	colorwin->show();}
+        xywh {95 85 20 20}
+      }
+      Fl_Button valley_color_box {
+        callback {if (colorwin->shown())
+	colorwin->hide();
+else
+	colorwin->show();}
+        xywh {95 110 20 20}
+      }
+    }
+    Fl_Window helpwin {
+      label {PeakFinder Help}
+      xywh {358 484 410 355} type Double hide resizable
+    } {
+      Fl_Button {} {
+        label Dismiss
+        callback {helpwin->hide();}
+        xywh {5 330 400 20}
+      }
+      Fl_Input helptext {
+        xywh {5 5 400 320} type Multiline textsize 11 resizable
+      }
+    }
+    Fl_Window colorwin {
+      label {Peak & Valley Colors} open
+      xywh {636 390 210 260} type Double visible
+    } {
+      Fl_Group peak_color {
+        label Peaks
+        callback {uchar r,g,b;
+r = o->r()*255;
+g = o->g()*255;
+b = o->b()*255;
+peak_color_box->color(fl_rgb_color(r,g,b));
+peak_color_box->redraw();
+iw->damage(FL_DAMAGE_OVERLAY);
+iw->redraw_overlay();} open
+        xywh {5 20 200 95} box DOWN_BOX
+        code0 {o->rgb(0,1,0);}
+        class Fl_Color_Chooser
+      } {}
+      Fl_Group valley_color {
+        label Valleys
+        callback {valley_color_box->color(fl_rgb_color(o->r()*255, o->g()*255, o->b()*255));
+valley_color_box->redraw();
+iw->damage(FL_DAMAGE_OVERLAY);
+iw->redraw_overlay();} open selected
+        xywh {5 135 200 95} box DOWN_BOX
+        code0 {o->rgb(1,1,0);}
+        class Fl_Color_Chooser
+      } {}
+      Fl_Button {} {
+        label dismiss
+        callback {colorwin->hide();}
+        xywh {5 235 200 20} labelsize 11
+      }
+    }
+  }
+} 

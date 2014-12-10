@@ -1,0 +1,55 @@
+WSxM file copyright Nanotec Electronica
+New Format Palette. 2001
+Image header size: 1512
+
+[Blue Info]
+
+    Control Point 0: (0 , 255)
+    Control Point 1: (76 , 255)
+    Control Point 2: (121 , 200)
+    Control Point 3: (153 , 81)
+    Control Point 4: (180 , 73)
+    Control Point 5: (191 , 48)
+    Control Point 6: (230 , 26)
+    Control Point 7: (255 , 24)
+    Number of Control Points: 8
+
+[Green Info]
+
+    Control Point 0: (0 , 255)
+    Control Point 1: (24 , 254)
+    Control Point 10: (189 , 238)
+    Control Point 11: (200 , 252)
+    Control Point 12: (230 , 255)
+    Control Point 13: (255 , 255)
+    Control Point 2: (65 , 225)
+    Control Point 3: (83 , 183)
+    Control Point 4: (108 , 148)
+    Control Point 5: (128 , 147)
+    Control Point 6: (135 , 186)
+    Control Point 7: (146 , 197)
+    Control Point 8: (151 , 241)
+    Control Point 9: (153 , 255)
+    Number of Control Points: 14
+
+[Palette Generation Settings]
+
+    Derivate Mode for the last blue Point: Automatic
+    Derivate Mode for the last green Point: Automatic
+    Derivate Mode for the last red Point: Automatic
+    Is there a particular palette index colored?: No
+    Smooth Blue: Yes
+    Smooth Green: Yes
+    Smooth Red: Yes
+
+[Red Info]
+
+    Control Point 0: (0 , 255)
+    Control Point 1: (26 , 183)
+    Control Point 2: (56 , 157)
+    Control Point 3: (94 , 148)
+    Control Point 4: (203 , 47)
+    Control Point 5: (255 , 25)
+    Number of Control Points: 6
+
+[Header end]

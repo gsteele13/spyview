@@ -1,0 +1,5 @@
+export CFLAGS="-arch i386"
+export CXXFLAGS=$CFLAGS
+export CPPFLAGS="-I/sw/include"
+export LDFLAGS="-L/sw/lib -g"
+./configure --prefix=$HOME --datarootdir=${HOME}/.spyview $*

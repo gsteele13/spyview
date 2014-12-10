@@ -1,0 +1,14 @@
+#!/bin/bash 
+# Reorganize a pm3d file into a dat file
+# usage: pm3d2dat x y z < foo.txt > foo.dat
+# where x,y, and z are the column indices
+if [ "$1" = "-h" ]
+then
+echo "Reorganize a pm3d file into a (matlab matrix) dat file"
+echo "Note: will automatically sort by your chosen x,y,z columns"
+echo "and add appropriate blank lines to create gnuplot data blocks"
+echo " usage: pm3d2dat x y z < foo.txt > foo.dat"
+echo " where x,y, and z are the column indices"
+exit
+fi
+sort -g -k $1 | sort -g -k $2 -s | splitfield $2 | grep -v '#' | cut -f $3 | gawk ' BEGIN { IFS="\n"; ORS=" "; } /^$/ { print "\n"; } // { print; }' | egrep -v '^$'

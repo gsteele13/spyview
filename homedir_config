@@ -1,0 +1,5 @@
+export CFLAGS="-O0 -g"
+env CXXFLAGS="$CFLAGS" LDFLAGS="-g" sh ./configure --prefix=$HOME --datarootdir=${HOME}/.spyview $*
+
+
+

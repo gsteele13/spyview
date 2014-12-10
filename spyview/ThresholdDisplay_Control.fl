@@ -1,0 +1,94 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0107 
+header_name {.h} 
+code_name {.cxx}
+decl {\#include "ThresholdDisplay.H"} {} 
+
+decl {\#include <FL/Fl_Color_Chooser.H>} {public
+} 
+
+decl {class ThresholdDisplay;} {public
+} 
+
+class ThresholdDisplay_Control {open
+} {
+  decl {ThresholdDisplay *td;} {public
+  }
+  Function {ThresholdDisplay_Control(ThresholdDisplay *tdp)} {open
+  } {
+    code {td = tdp;} {}
+    Fl_Window win {
+      label {Threshold Display} open
+      xywh {673 199 295 90} type Double visible
+    } {
+      Fl_Button {} {
+        label dismiss
+        callback {win->hide();}
+        xywh {225 65 65 20} labelsize 11
+      }
+      Fl_Value_Input low {
+        label {Low:}
+        callback {refresh();}
+        xywh {45 10 100 20} when 8 maximum 100 value 2
+      }
+      Fl_Value_Input high {
+        label {High:}
+        callback {refresh();} selected
+        xywh {190 10 100 20} when 8 maximum 100 value 90
+      }
+      Fl_Group {} {open
+        xywh {110 40 200 15}
+      } {
+        Fl_Round_Button image {
+          label Image
+          callback {refresh();}
+          xywh {110 40 70 15} type Radio down_box ROUND_DOWN_BOX
+        }
+        Fl_Round_Button line {
+          label Line
+          callback {refresh();}
+          xywh {180 40 70 15} type Radio down_box ROUND_DOWN_BOX value 1
+        }
+        Fl_Round_Button col {
+          label Col
+          callback {refresh();}
+          xywh {240 40 70 15} type Radio down_box ROUND_DOWN_BOX
+        }
+      }
+      Fl_Group {} {open
+        xywh {5 35 70 75}
+      } {
+        Fl_Check_Button val {
+          label Value
+          callback {refresh();}
+          xywh {5 65 70 15} type Radio down_box DOWN_BOX
+        }
+        Fl_Check_Button percent {
+          label {Percentile:}
+          callback {refresh();}
+          xywh {5 40 70 15} type Radio down_box DOWN_BOX value 1
+        }
+      }
+      Fl_Light_Button enable {
+        label Enable
+        callback {refresh();}
+        xywh {90 65 64 20} labelsize 12
+      }
+      Fl_Button {} {
+        label {color...}
+        callback {uchar r,g,b;
+if (fl_color_chooser("Color", r, g, b))
+{
+   td->r=r; td->g=g; td->b=b;
+}
+refresh();}
+        xywh {160 65 60 20} labelsize 12
+      }
+    }
+  }
+  Function {refresh()} {open
+  } {
+    code {td->iw->damage(FL_DAMAGE_OVERLAY);
+td->iw->redraw_overlay();} {}
+  }
+} 
