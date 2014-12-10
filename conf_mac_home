@@ -1,4 +1,4 @@
-export CFLAGS="-arch i386"
+export CFLAGS="-arch x86_64"
 export CXXFLAGS=$CFLAGS
 export CPPFLAGS="-I/sw/include"
 export LDFLAGS="-L/sw/lib -g"

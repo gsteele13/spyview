@@ -39,6 +39,7 @@ public:
 class ccspace
 {
 public:
+  // ccspace(){}
   static const double eps;
 protected:
   inline bool bound(double &x) const // Return true if number was clipped
@@ -93,6 +94,7 @@ extern ccolor cc_WhitePoint;
 class cc_CIEXYZ_class : public ccspace
 {
 public:
+  cc_CIEXYZ_class(){}
   bool get(const ccolor &c, double &y, double &x, double &z) const { x=c.X; y=c.Y; z=c.Z; return false; };
   void set(ccolor &c, double y, double x, double z) const{ c.X=x; c.Y=y; c.Z=z; };
   
@@ -111,6 +113,7 @@ extern const cc_CIEXYZ_class cc_CIEXYZ;
 class cc_CIExyY_class : public ccspace
 {
 public:
+  cc_CIExyY_class(){}
   bool get(const ccolor &c, double &Y, double &x, double &y) const  // NOTE Yxy order!
     { double s = c.X + c.Y + c.Z; x = c.X / s; y = c.Y / s; Y = c.Y; return false;};
   void set(ccolor &c, double Y, double x, double y) const
@@ -132,6 +135,7 @@ protected:
   static const double un = 0.2009;
   static const double vn = 0.4610;
 public:
+  cc_CIELuv_class(){}
   bool get(const ccolor &c, double &L, double &u, double &v) const
   {
     static const double m1 = pow(6.0/29.0,3.0);
@@ -194,6 +198,7 @@ private:
       return 3*delta*delta*(x-16.0/116.0);
   }
 public:
+  cc_CIELAB_class(){}
   bool get(const ccolor &c, double &L, double &a, double &b) const
   {
     L=116.0*labF(c.Y/cc_WhitePoint.Y)-16;
@@ -249,6 +254,7 @@ private:
       return pow((x+a)/(1.0+a),2.4);
   };
 public: 
+  cc_sRGB_class(){}
   bool get(const ccolor &c, double &r, double &g, double &b) const// return true if clipped
   {
     double Rl = 3.2410*c.X-1.5374*c.Y-0.4986*c.Z;
@@ -290,6 +296,7 @@ extern const cc_sRGB_class cc_sRGB;
 class cc_HSV_class : public ccspace
 {
 public:
+  cc_HSV_class(){}
   bool get(const ccolor &c, double &h, double &s, double &v) const
   {
     double r,g,b;
@@ -353,6 +360,7 @@ extern const cc_HSV_class cc_HSV;
 class cc_CIECAM02_LMS_class : public ccspace 
 {
 public:
+  cc_CIECAM02_LMS_class(){}
   static const double F = 1.0;
   static const double c_const = 0.525;
   static const double Nc = 1.0;
@@ -418,6 +426,7 @@ public:
 class cc_CIECAM02_Jab_class : public ccspace 
 {
 public:
+  cc_CIECAM02_Jab_class(){}
   static const double F = 1.0;
   static const double c_const = 0.525;
   static const double Nc = 1.0;

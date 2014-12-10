@@ -18,7 +18,7 @@ class SpypalWaypoint
 
   // Needed for sort
   bool operator<(const SpypalWaypoint &c2)
-    { return loc < c2.loc; };
+    const { return loc < c2.loc; };
 };
 
 typedef std::vector<SpypalWaypoint> SpypalWaypoints_t;

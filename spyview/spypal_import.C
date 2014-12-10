@@ -59,11 +59,11 @@ static double try_colormap(std::vector<SpypalWaypoint> &wps, const ccspace *cs, 
 double spypal_bisect_anneal(SpypalWaypoints_t &wps_out, const ccspace *cs, unsigned char *c1, unsigned l)
 {
   size_t size = wps_out.size();
-  assert(size >= 2);
+  
 
   if(size == 2)
     return spypal_anneal(wps_out,cs,c1,l);
-
+  
   double err;
   SpypalWaypoints_t wps(3);
 

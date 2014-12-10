@@ -34,7 +34,7 @@ char *eng(double value, int digits, int numeric)
       if (digits < 1)
 	{
 	  fprintf(stderr, "invalid digits: %d\n", digits);
-	  return result;
+	  return (char*)&result;
 	}
 
       if (value < 0.)
@@ -63,14 +63,14 @@ char *eng(double value, int digits, int numeric)
          digits -= 1;
       if (digits < 1) digits = 1;
       if (expof10 == 0)
-	snprintf(res, BUFSIZE, "%.*f", digits-1, value); 
+	snprintf((char*)res, BUFSIZE, "%.*f", digits-1, value); 
       else if(numeric || (expof10 < PREFIX_START) || (expof10 > PREFIX_END))
-        snprintf(res, BUFSIZE, "%.*fe%d", digits-1, value, expof10); 
+        snprintf((char*)res, BUFSIZE, "%.*fe%d", digits-1, value, expof10); 
       else
-        snprintf(res, BUFSIZE, "%.*f%s", digits-1, value, 
+        snprintf((char*)res, BUFSIZE, "%.*f%s", digits-1, value, 
 		 prefix[(expof10-PREFIX_START)/3]);
 
       //fprintf(stderr, "val %e dig %d num %d res _%s_\n", value, digits, numeric, result);
       
-      return result;
+      return (char*)result;
 }

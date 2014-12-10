@@ -1900,7 +1900,7 @@ void ImageWindow::load_mtx_cut(int index, mtxcut_t type)
   int oldw = w;
   int oldh = h;
 
-  type = type %3;
+  type = (mtxcut_t)(type %3);
   
   if (!id.data3d)
     {

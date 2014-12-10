@@ -67,11 +67,11 @@ void Add_Image_Operation(Image_Operation *);       // Copy an image operation in
 void savesettings(std::string name);
 void loadsettings(std::string name);
 
-void saveColors(char *fn=NULL);
-void loadColors(char *fn=NULL);
+void saveColors(char *fn);
+void loadColors(char *fn);
 
-void saveImageProcessing(char *fn=NULL);
-void loadImageProcessing(char *fn=NULL);
+void saveImageProcessing(char *fn);
+void loadImageProcessing(char *fn);
 
 extern const char *spyviewSettingsDir;
 

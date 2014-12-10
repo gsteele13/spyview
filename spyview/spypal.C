@@ -533,7 +533,7 @@ int main(int argc, char **argv)
 	  spypal->load(argv[i]);
 	  spypal->save(argv[i]);
 	}
-      return;
+      return 1;
     }
   spypal->win->show();
 

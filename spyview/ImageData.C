@@ -549,7 +549,7 @@ int ImageData::load_GP(const char *name)
       if (mtx.load_gp_cols(name) == -1) return -1;
       // Good default settings for gp_cols
       mtx_index = gp_column;
-      mtx_cut_type = 0;
+      mtx_cut_type = (mtxcut_t)0;
       do_mtx_cut_title = false;
     }
   if (gpload_type == INDEX)
@@ -3268,7 +3268,7 @@ double nextreading(FILE *fp, int col, int &lnum)
   //info("in next reading\n");
   //getchar();
   // char *buf = new char [LINESIZE]; doesn't work under windows? c++ runtime error?
-  char *buf = malloc(LINESIZE*sizeof(char));
+  char *buf = (char*)malloc(LINESIZE*sizeof(char));
   double val;
   char *p;
 

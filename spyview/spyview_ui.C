@@ -490,11 +490,11 @@ else
 }
 
 static void cb_Load3(Fl_Button*, void*) {
-  loadColors();
+  loadColors(NULL);
 }
 
 static void cb_Save2(Fl_Button*, void*) {
-  saveColors();
+  saveColors(NULL);
 }
 
 static void cb_Load4(Fl_Button*, void*) {
@@ -506,7 +506,7 @@ chooser.preview(0);
 chooser.show();
 while (chooser.shown()) Fl::wait();
 if (chooser.value() == NULL) return;
-loadColors(chooser.value(1));
+loadColors((char*)chooser.value(1));
 }
 
 static void cb_Save3(Fl_Button*, void*) {
@@ -518,7 +518,7 @@ chooser.preview(0);
 chooser.show();
 while (chooser.shown()) Fl::wait();
 if (chooser.value() == NULL) return;
-saveColors(chooser.value(1));
+saveColors((char *)chooser.value(1));
 }
 
 #include <FL/Fl_Image.H>
@@ -739,11 +739,11 @@ static void cb_dismiss(Fl_Button*, void*) {
 }
 
 static void cb_def(Fl_Button*, void*) {
-  loadImageProcessing();
+  loadImageProcessing(NULL);
 }
 
 static void cb_def1(Fl_Button*, void*) {
-  saveImageProcessing();
+  saveImageProcessing(NULL);
 }
 
 static void cb_Load5(Fl_Button*, void*) {
@@ -755,7 +755,7 @@ chooser.preview(0);
 chooser.show();
 while (chooser.shown()) Fl::wait();
 if (chooser.value() == NULL) return;
-loadImageProcessing(chooser.value(1));
+loadImageProcessing((char*)chooser.value(1));
 }
 
 static void cb_Save4(Fl_Button*, void*) {
@@ -767,7 +767,7 @@ chooser.preview(0);
 chooser.show();
 while (chooser.shown()) Fl::wait();
 if (chooser.value() == NULL) return;
-saveImageProcessing(chooser.value(1));
+saveImageProcessing((char*)chooser.value(1));
 }
 
 static void cb_choice(Fl_Choice*, void*) {
@@ -1139,7 +1139,12 @@ static void cb_indexbox(Fl_Value_Input*, void*) {
 indexslider->value(val);
 indexroller->value(val);
 indexbox->value(val);
-iw->load_mtx_cut( indexbox->value(), (mtxcut_t)(int)dim->mvalue()->user_data());
+// iw->load_mtx_cut( indexbox->value(), (mtxcut_t)(int)dim->mvalue()->user_data());
+
+//#this will make the pointer lose precision, will it still work?
+// int t = *( (int*) (&( ) );
+iw->load_mtx_cut( indexbox->value(), (mtxcut_t)(long)dim->mvalue()->user_data());
+
 if (norm_on_load->value())
     iw->normalize();
 update_title();
@@ -1165,7 +1170,9 @@ Fl_Choice *dim=(Fl_Choice *)0;
 
 static void cb_dim(Fl_Choice*, void*) {
   //info("dim has value %d\n", dim->value());
-iw->load_mtx_cut(indexbox->value(), (mtxcut_t)(int)dim->mvalue()->user_data());
+//   int t = *(int*)(&dim->mvalue()->user_data());
+
+iw->load_mtx_cut(indexbox->value(), (mtxcut_t)(long)dim->mvalue()->user_data());
 if (norm_on_load->value())
     iw->normalize();
 }

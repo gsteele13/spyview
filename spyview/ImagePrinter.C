@@ -1327,14 +1327,14 @@ void Image_Printer::draw_colorbar()
 	      buf[0] = 0; // a good default
 	      if (ipc->cticfmt->value()[0] == 'e')
 		{
-		  char *p = ipc->cticfmt->value()+1;
+		  const char *p = ipc->cticfmt->value()+1;
 		  long int dig = strtol(p, (char **)NULL, 10); // strtol returns zero if no digits are found
 		  if (dig == 0) dig = 2; // a reasonable default?
 		  strncpy(buf, eng(c, dig, 1), 128);
 		}
 	      else if (ipc->cticfmt->value()[0] == 's')
 		{
-		  char *p = ipc->cticfmt->value()+1;
+		  const char *p = ipc->cticfmt->value()+1;
 		  long int dig = strtol(p, (char **)NULL, 10); // strtol returns zero if no digits are found
 		  if (dig == 0) dig = 2; // a reasonable default?
 		  strncpy(buf, eng(c, dig, 0), 128);
@@ -1466,14 +1466,14 @@ void Image_Printer::draw_colorbar()
 	      buf[0] = 0; // a good default
 	      if (ipc->cticfmt->value()[0] == 'e')
 		{
-		  char *p = ipc->cticfmt->value()+1;
+		  const char *p = ipc->cticfmt->value()+1;
 		  long int dig = strtol(p, (char **)NULL, 10); // strtol returns zero if no digits are found
 		  if (dig == 0) dig = 2; // a reasonable default?
 		  strncpy(buf, eng(c, dig, 1), 128);
 		}
 	      else if (ipc->cticfmt->value()[0] == 's')
 		{
-		  char *p = ipc->cticfmt->value()+1;
+		  const char *p = ipc->cticfmt->value()+1;
 		  long int dig = strtol(p, (char **)NULL, 10); // strtol returns zero if no digits are found
 		  if (dig == 0) dig = 2; // a reasonable default?
 		  strncpy(buf, eng(c, dig, 0), 128);
@@ -1560,14 +1560,14 @@ void Image_Printer::draw_axis_tics()
 	  buf[0] = 0; // a good default
 	  if (ipc->xticfmt->value()[0] == 'e')
 	    {
-	      char *p = ipc->xticfmt->value()+1;
+	      const char *p = ipc->xticfmt->value()+1;
 	      long int dig = strtol(p, (char **)NULL, 10); // strtol returns zero if no digits are found
 	      if (dig == 0) dig = 2; // a reasonable default?
 	      strncpy(buf, eng(x, dig, 1), 128);
 	    }
 	  else if (ipc->xticfmt->value()[0] == 's')
 	    {
-	      char *p = ipc->xticfmt->value()+1;
+	      const char *p = ipc->xticfmt->value()+1;
 	      long int dig = strtol(p, (char **)NULL, 10); // strtol returns zero if no digits are found
 	      if (dig == 0) dig = 2; // a reasonable default?
 	      strncpy(buf, eng(x, dig, 0), 128);
@@ -1650,14 +1650,14 @@ void Image_Printer::draw_axis_tics()
 	  buf[0] = 0; // a good default
 	  if (ipc->yticfmt->value()[0] == 'e')
 	    {
-	      char *p = ipc->yticfmt->value()+1;
+	      const char *p = ipc->yticfmt->value()+1;
 	      long int dig = strtol(p, (char **)NULL, 10); // strtol returns zero if no digits are found
 	      if (dig == 0) dig = 2; // a reasonable default?
 	      strncpy(buf, eng(y, dig, 1), 128);
 	    }
 	  else if (ipc->yticfmt->value()[0] == 's')
 	    {
-	      char *p = ipc->yticfmt->value()+1;
+	      const char *p = ipc->yticfmt->value()+1;
 	      long int dig = strtol(p, (char **)NULL, 10); // strtol returns zero if no digits are found
 	      if (dig == 0) dig = 2; // a reasonable default?
 	      strncpy(buf, eng(y, dig, 0), 128);

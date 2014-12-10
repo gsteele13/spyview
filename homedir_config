@@ -1,5 +1,6 @@
 export CFLAGS="-O0 -g"
-env CXXFLAGS="$CFLAGS" LDFLAGS="-g" sh ./configure --prefix=$HOME --datarootdir=${HOME}/.spyview $*
+export CXXFLAGS="-stdlib=libc++"; export LDFLAGS="-stdlib=libc++"
+env CXXFLAGS="$CFLAGS $CXXFLAGS" LIBS="$LIBS -ljpeg" LDFLAGS="$LDFLAGS -framework CoreFoundation -framework AppKit -framework ApplicationServices -framework GLUT -g" sh ./configure --prefix=$HOME --datarootdir=${HOME}/.spyview $*
 
 
 

@@ -30,14 +30,14 @@ void spypal_wizard::recalculate(bool reposition)
   //  printf("Recalculating: cache was %s\n", hit ? "hit" : "not hit");
   if(!hit)
     {
-      generate_go(wps,(int)opt_direction->mvalue()->user_data(),true,
+      generate_go(wps,(intptr_t)opt_direction->mvalue()->user_data(),true,
 		  (ccspace *)colorspace->mvalue()->user_data(),
 		  (ccspace *)metricspace->mvalue()->user_data(),
 		  atoi(steps->value()));
       cache_waypoints = wps;
       cache_cmap = cmap;
       cache_steps = atoi(steps->value());
-      cache_direction = (int)opt_direction->mvalue()->user_data();
+      cache_direction = (intptr_t)opt_direction->mvalue()->user_data();
       cache_colorspace = (ccspace *)colorspace->mvalue()->user_data();
       cache_metricspace = (ccspace *)metricspace->mvalue()->user_data();
 ;
@@ -200,7 +200,7 @@ void spypal_wizard::populate_swatches(Fl_Scroll *t)
 
 bool spypal_wizard::cache_hit(std::vector<SpypalWaypoint> &wps)
 {
-  if(cache_direction != (int)opt_direction->mvalue()->user_data())
+  if(cache_direction != (intptr_t)opt_direction->mvalue()->user_data())
     return false;
   if(cache_steps != atoi(steps->value()))
     return false;

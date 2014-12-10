@@ -152,7 +152,7 @@ int main(int argc, char **argv)
 	  id.do_mtx_cut_title = true;
 	  
 	  // type: 0 = split on x, ...
-	  id.mtx_cut_type = xsection_type;
+	  id.mtx_cut_type = (mtxcut_t)xsection_type;
 
 	  char fmt[256];
 	  int digits = sprintf(fmt, "%d", id.mtx.size[xsection_type]);

@@ -125,10 +125,10 @@ void find_cmaps(std::string path, std::string pretty_path)
 	  pretty_fn.erase(pretty_fn.find_last_of('.'));
 	  cmapfiles.push_back(path + fn);
 	  int ind = cmapch->add((pretty_path + pretty_fn).c_str(), 0, 0, reinterpret_cast<void *>(cmapfiles.size()-1));
-	  if(strstr(namelist[i]->d_name,".ppm") != NULL)
-	    cmapch->menu()[ind].labelfont(FL_HELVETICA_ITALIC);
-	  else
-	    cmapch->menu()[ind].labelfont(FL_HELVETICA);
+      // if(strstr(namelist[i]->d_name,".ppm") != NULL)
+      //   cmapch->menu()[ind].labelfont(FL_HELVETICA_ITALIC);
+      // else
+      //   cmapch->menu()[ind].labelfont(FL_HELVETICA);
 	  count++;	  
 	}
       else if (fl_filename_isdir((path+namelist[i]->d_name).c_str()))
@@ -703,8 +703,8 @@ int main(int argc, char **argv)
       info("Loaded "_STF" color maps from %s.\n",cmapfiles.size(),user_path.c_str());
     }
 
-  int ind = cmapch->add("Custom",0,0,-1);
-  cmapch->menu()[ind].labelfont(FL_HELVETICA_BOLD); // Make spypal stand out as it's different.
+  int ind = cmapch->add("Custom",0,0,(void*)-1);
+  // cmapch->menu()[ind].labelfont(FL_HELVETICA_BOLD); // Make spypal stand out as it's different.
 
   // Update some of the widgets with the default values from the ImageWindow class
   gpusing->value(iw->gp_using_string);
@@ -765,13 +765,13 @@ int keyhandler(int event)
 	{
 	case 'd':
 	  if (Fl::event_state() & FL_SHIFT)
-	    loadImageProcessing();
+	    loadImageProcessing(NULL);
 	  else if (Fl::event_state() & FL_CTRL)
-	    loadColors();
+	    loadColors(NULL);
 	  else
 	    {
-	      loadImageProcessing();
-	      loadColors();
+	      loadImageProcessing(NULL);
+	      loadColors(NULL);
 	    }
 	  return 1;
 	case 'e':
@@ -962,7 +962,8 @@ void save_cmap_cb(Fl_Button *o, void*)
 // Called by spypal to indicate the colormap has changed.
 void spypal_cb()
 {
-  int index = reinterpret_cast<int>(cmapch->mvalue()->user_data());
+  intptr_t index;
+  index = (intptr_t)(cmapch->mvalue()->user_data());
   if(index != -1)
       cmapch->value(cmapch->find_item("Custom"));
   iw->setColormap(spypal_colormap,spypal_colormap_size);
@@ -990,9 +991,8 @@ void cmapedit_cb(Fl_Button *, void *)
 void cmapch_cb(Fl_Widget *o, void*)
 {
   FILE *fp;
-  int index;
 
-  index = reinterpret_cast<int>(cmapch->mvalue()->user_data());
+  intptr_t index = (intptr_t)(cmapch->mvalue()->user_data());
 
   static char label[1024];
   // This seems to be an old piece of code: where is the image window
@@ -1010,7 +1010,7 @@ void cmapch_cb(Fl_Widget *o, void*)
     }
 
   assert(index >= 0);
-  assert((unsigned)index < cmapfiles.size());
+  assert(index < cmapfiles.size());
 
   //info("userdata for %s is %d\n", cmapch->value(), index);
   const char *filename = cmapfiles[index].c_str();
@@ -1124,14 +1124,16 @@ void cmapch_cb(Fl_Widget *o, void*)
 
 void filech_cb(Fl_Widget *, void *)
 {
-  int index = reinterpret_cast<int>(filech->mvalue()->user_data());
-  const char *filename = filenames[index].c_str();
+  intptr_t index;
+  index = (intptr_t)filech->mvalue()->user_data();
+  char *filename = strdup(filenames[index].c_str());
   //info("loading file _%s_ from index %d, text _%s_\n", filename, index, filech->text(filech->value()));
   int old_w, old_h;
 
   // Fixme; this leaks memory.
   char *dir = strdup(filename);
   dir = dirname(dir);
+  
   filename = basename(filename);
   current_filename = filename;
   if (strcmp(dir, ".") == 0)
@@ -1187,7 +1189,7 @@ void update_title()
 {
   char buf[256]; 
   if (iw->id.data3d)
-    snprintf(buf, 256, "%s %s %.0f (%.3g to %.3g), (%.3g to %.3g)", 
+    snprintf(buf, 256, "%s %.0f (%.3g to %.3g), (%.3g to %.3g)", 
 	     current_filename.c_str(), 
 	     indexbox->value(),
 	     xmin->value(), xmax->value(),
@@ -1489,7 +1491,7 @@ void Fetch_ProcWindow_Settings(Image_Operation *op)
 	  p->value = b->value();
 	  break;
 	case '?':
-	  p->value = reinterpret_cast<int>(ch->mvalue()->user_data_);
+	  p->value = (intptr_t)ch->mvalue()->user_data_;
 	  break;
 	case '.':
 	  p->value = 0;
@@ -1944,7 +1946,7 @@ public:
 	if (version >= 1)
 	  iw->gp_with_string = gpwith->value();
 	iw->setXZoom(iw->xzoom); // make sure to call this after updating class variables as it calls update_widgets()
-	if(reinterpret_cast<int>(cmapch->mvalue()->user_data()) == -1) // Custom
+	if(cmapch->mvalue()->user_data() == (void*)-1) // Custom
 	  {
 	    cmap_is_ppm = false;
 	    spypal->recalculate(true);
@@ -2089,6 +2091,7 @@ void saveColors(char *fn)
     }
   else
     filename = fn;
+  
   info("saving colors to file %s\n", filename.c_str());
   std::ofstream ofs(filename.c_str());
   if (!ofs.good())

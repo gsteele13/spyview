@@ -126,7 +126,7 @@ void Fitting::updateDirection()
 {
   const Fl_Menu_Item *fmi = fc->lctype->mvalue();
   assert(fmi);
-  iw->line_cut_limit = reinterpret_cast<int>(fmi->user_data());
+  iw->line_cut_limit = reinterpret_cast<intptr_t>(fmi->user_data());
   if(!(iw->line_cut_type & iw->line_cut_limit))
     {
       iw->line_cut_type = iw->line_cut_limit;
