@@ -1,0 +1,6 @@
+EXPERIMENTAL
+
+To install copy bin & dylibs folder to whereever you like to have installed.
+then simply run:
+
+sudo link.sh
