@@ -9,7 +9,7 @@ This is a first attempt to combine all dependend libraries and binaries into one
 
 # Installation
 
-## Requires gnuplot (--with-x11)
+## Requires gnuplot
 Easiest via homebrew:
 
 > ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
