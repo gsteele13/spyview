@@ -1,6 +1,11 @@
 EXPERIMENTAL
 
-To install copy bin & dylibs folder to whereever you like to have installed.
-then simply run:
+I copied all dependent dylibs into one folder and liked 
+spyview programms to search for them in the folder where it is extracted.
 
-sudo link.sh
+To install spyview simply copy this folder to whereever you like to have spyview installed.
+
+To start spyview use the terminal go to the folder and execute spyview
+
+./spyview
+
