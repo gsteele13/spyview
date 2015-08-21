@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-PATH=/opt/local/bin:/opt/local/sbin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:/usr/texbin
-DIR=$(cd "$(dirname "$0")"; pwd)
-$DIR/Contents/Resources/./spyview
