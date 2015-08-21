@@ -2,7 +2,7 @@
 Spyview
 
 Original source code: http://nsweb.tn.tudelft.nl/~gsteele/spyview/
-This code was forked from https://github.com/wakass/spyview.
+This code was forked from https://github.com/wakass/spyview .
 
 This is a first attempt to combine all dependend libraries and binaries into one .app bundle.
 
