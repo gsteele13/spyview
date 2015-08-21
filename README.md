@@ -17,4 +17,4 @@ Easiest via homebrew:
 
 ## Install Spyview
 With a DMG file:
-https://github.com/benschneider/spyview/blob/master/Mac_installation/spyview.dmg
+https://github.com/benschneider/spyview/raw/master/Mac_installation/spyview.dmg
