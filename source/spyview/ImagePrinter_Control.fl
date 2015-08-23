@@ -1,0 +1,722 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0107 
+header_name {.h} 
+code_name {.cxx}
+decl {\#include "ImageWindow.H"} {} 
+
+decl {\#include "ImagePrinter.H"} {} 
+
+decl {\#include <FL/Fl_File_Chooser.H>} {} 
+
+decl {\#include <FL/Fl_Color_Chooser.H>} {public
+} 
+
+decl {class ImageWindow;} {public
+} 
+
+decl {class Image_Printer;} {public
+} 
+
+class Image_Printer_Control {open
+} {
+  decl {ImageWindow *iw;} {public
+  }
+  decl {Image_Printer *ip;} {public
+  }
+  Function {Image_Printer_Control(ImageWindow *iwp)} {open
+  } {
+    code {iw=iwp;} {}
+    Fl_Window win {
+      label {Spyview Postscript Controls}
+      xywh {795 47 415 730} type Double resizable visible
+    } {
+      Fl_Group {} {
+        label Text
+        xywh {10 25 190 120} box DOWN_BOX align 5 resizable
+      } {
+        Fl_Check_Button yaxis_label {
+          label {Y axis label}
+          callback {ip->updatePreview();}
+          xywh {20 48 105 15} down_box DOWN_BOX
+        }
+        Fl_Check_Button xaxis_label {
+          label {X axis label}
+          callback {ip->updatePreview();}
+          xywh {20 28 105 15} down_box DOWN_BOX
+        }
+        Fl_Check_Button dir_stamp {
+          label {Directory stamp}
+          callback {ip->updatePreview();}
+          xywh {20 88 135 15} down_box DOWN_BOX
+        }
+        Fl_Input title {
+          tooltip {Can include %s specifiers: first will become filename and second the Z axis unit} xywh {75 123 120 20}
+        }
+        Fl_Check_Button do_title {
+          label {Title:}
+          callback {ip->updatePreview();}
+          xywh {20 124 55 20} down_box DOWN_BOX
+        }
+        Fl_Check_Button caxis_label {
+          label {Colobar axis label}
+          callback {ip->updatePreview();}
+          xywh {20 68 150 15} down_box DOWN_BOX
+        }
+        Fl_Check_Button watermark {
+          label Watermark
+          xywh {20 107 135 15} down_box DOWN_BOX
+        }
+      }
+      Fl_Group {} {
+        label {Page Settings}
+        xywh {215 25 190 120} box DOWN_BOX align 5
+      } {
+        Fl_Group {} {
+          xywh {220 30 160 85}
+        } {
+          Fl_Round_Button paper_eps {
+            label EPS
+            callback {ip->update_page_size();
+ip->updatePreview();}
+            xywh {225 35 130 15} type Radio down_box ROUND_DOWN_BOX value 1
+          }
+          Fl_Round_Button paper_letter {
+            label {Letter (8.5x11)}
+            callback {ip->update_page_size(1);
+ip->updatePreview();}
+            xywh {225 55 130 15} type Radio down_box ROUND_DOWN_BOX
+          }
+          Fl_Round_Button paper_a4 {
+            label {A4 (8.3x11.7)}
+            callback {ip->update_page_size(2);
+ip->updatePreview();}
+            xywh {225 75 130 15} type Radio down_box ROUND_DOWN_BOX
+          }
+        }
+        Fl_Check_Button landscape {
+          label Landscape
+          callback {ip->fetchSettings(this);
+ip->update_page_size();
+ip->updatePreview();}
+          xywh {225 95 130 15} down_box DOWN_BOX value 1
+        }
+        Fl_Check_Button plotLineCut {
+          label Linecut
+          callback {ip->updatePreview();}
+          tooltip {Draw the location of the linecut} xywh {220 115 75 25} down_box DOWN_BOX
+        }
+        Fl_Check_Button plotLines {
+          label Lines
+          callback {ip->updatePreview();}
+          tooltip {Plot the lines drawn with the linedraw extension} xywh {295 115 75 25} down_box DOWN_BOX
+        }
+        Fl_Check_Button plotZoomBox {
+          label ZB
+          callback {ip->updatePreview();}
+          tooltip {Plot the lines drawn with the linedraw extension} xywh {355 115 40 25} down_box DOWN_BOX
+        }
+      }
+      Fl_Group {} {
+        label {Position (inches)}
+        xywh {10 170 190 160} box DOWN_BOX align 5
+      } {
+        Fl_Input width {
+          label Width
+          callback {ip->fetchSettings(this);}
+          xywh {85 180 105 20} type Float
+        }
+        Fl_Input height {
+          label Height
+          callback {ip->fetchSettings(this);}
+          xywh {85 205 105 20} type Float
+        }
+        Fl_Input xoff {
+          label {X Offset}
+          callback {ip->fetchSettings(this);}
+          xywh {85 230 105 20} type Float
+        }
+        Fl_Input yoff {
+          label {Y Offset}
+          callback {ip->fetchSettings(this);}
+          xywh {85 255 105 20} type Float
+        }
+        Fl_Button center_x {
+          label {Center X}
+          callback {if (!paper_eps->value())
+{
+	double total_width = ip->width;
+	if (colorbar->value()) total_width += cbar_width->value() + 0.30;
+	ip->xoff = (ip->page_width-total_width)/2;
+	ip->updateSettings(this);
+}}
+          xywh {25 280 75 20}
+        }
+        Fl_Button {} {
+          callback {ip->setAspectRatio(4);}
+          tooltip {Set the size give same AR as the current spyview window by changing width} image {up.png} xywh {116 303 22 22} labelsize 10
+        }
+        Fl_Button center_y {
+          label {Center Y}
+          callback {if (!paper_eps->value())
+{
+	ip->yoff = (ip->page_height-atof(height->value()))/2;
+	ip->updateSettings(this);
+}}
+          xywh {115 280 75 20}
+        }
+        Fl_Button {} {
+          callback {ip->setAspectRatio(5);}
+          tooltip {Set the size give same AR as the current spyview window by changing width} image {vertical.png} xywh {142 303 22 22} labelsize 10
+        }
+        Fl_Button {} {
+          callback {ip->setAspectRatio(6);}
+          tooltip {Set the size give same AR as the current spyview window by changing width} image {down.png} xywh {168 303 22 22} labelsize 10
+        }
+        Fl_Button {} {
+          callback {ip->setAspectRatio(3);}
+          tooltip {Set the size give same AR as the current spyview window by changing width} image {right.png} xywh {78 303 22 22} labelsize 10
+        }
+        Fl_Button {} {
+          callback {ip->setAspectRatio(2);}
+          tooltip {Set the size give same AR as the current spyview window by changing width} image {horizontal.png} xywh {52 303 22 22} labelsize 10
+        }
+        Fl_Button {} {
+          callback {ip->setAspectRatio(1);}
+          tooltip {Set the size give same AR as the current spyview window by changing width} image {left.png} xywh {26 303 22 22} labelsize 10
+        }
+      }
+      Fl_Group {} {
+        label Ticks
+        xywh {215 170 190 160} box DOWN_BOX align 5
+      } {
+        Fl_Input ticklength {
+          label {Tick Len(")}
+          callback {ip->fetchSettings(this);}
+          tooltip {Tick length, in inches.  Set to zero for no ticks.} xywh {295 180 105 20} type Float
+        }
+        Fl_Input xspacing {
+          label {X Spacing}
+          callback {ip->fetchSettings(this);}
+          tooltip {X Tickmark spacing.  Set to 0 for auto.} xywh {295 205 105 20} type Float
+        }
+        Fl_Input yspacing {
+          label {Y Spacing}
+          callback {ip->fetchSettings(this);}
+          tooltip {Y Tickmark Spacing.  Set to 0 for auto.} xywh {295 230 105 20} type Float
+        }
+        Fl_Input xscale {
+          label {X Scale}
+          callback {ip->updatePlotRange(this);
+ip->fetchSettings(this);}
+          tooltip {Scale factor for X Axis} xywh {295 255 105 20} type Float
+        }
+        Fl_Input yscale {
+          label {Y Scale}
+          callback {ip->updatePlotRange(this);
+ip->fetchSettings(this);}
+          tooltip {Scale factor for Y Axis} xywh {295 280 105 20} type Float
+        }
+        Fl_Check_Button precise_ticks {
+          label Precise
+          callback {ip->updatePreview();}
+          tooltip {Align tick marks precisely to the pixels rather than aligning them to the frame} xywh {225 305 70 15} down_box DOWN_BOX value 1
+        }
+        Fl_Check_Button fancy_ticks {
+          label Fancy
+          callback {ip->updatePreview();}
+          tooltip {Align tick marks precisely to the pixels rather than aligning them to the frame} xywh {300 305 70 15} down_box DOWN_BOX
+        }
+      }
+      Fl_Group {} {
+        label Font
+        xywh {10 355 190 65} box DOWN_BOX align 5
+      } {
+        Fl_Input face {
+          label Face
+          callback {ip->fetchSettings(this);}
+          xywh {85 365 105 20}
+        }
+        Fl_Input fontsize {
+          label {Size (pts)}
+          callback {ip->fetchSettings(this);}
+          xywh {85 390 105 20} type Float
+        }
+      }
+      Fl_Group {} {
+        label {Lines Widths (pts)}
+        xywh {215 355 190 65} box DOWN_BOX align 5
+      } {
+        Fl_Input boxwidth {
+          label Box
+          callback {ip->fetchSettings(this);}
+          tooltip {Set the line width, in points, for the box around the plot} xywh {295 365 105 20} type Float
+        }
+        Fl_Input tickwidth {
+          label Ticks
+          callback {ip->fetchSettings(this);}
+          tooltip {Set the line width, in points, for the tick marks on the plot.} xywh {295 390 105 20} type Float
+        }
+      }
+      Fl_Group {} {
+        label {Tick Formats}
+        xywh {10 445 190 105} box DOWN_BOX align 5
+      } {
+        Fl_Input xticfmt {
+          label {X Format}
+          callback {ip->fetchSettings(this);}
+          tooltip {X Tick format, as for printf.
+eN = engineering, N digits
+sN = scientific, N digits
+0 = no tic labels
+blank = no tics or labels.} xywh {110 455 80 20}
+        }
+        Fl_Input yticfmt {
+          label {Y Format}
+          callback {ip->fetchSettings(this);}
+          tooltip {Y Tick format, as for printf.
+eN = engineering, N digits
+sN = scientific, N digits
+0 = no tic labels
+blank = no tics or labels.} xywh {110 480 80 20}
+        }
+        Fl_Input cticfmt {
+          label {CBar Format}
+          callback {ip->fetchSettings(this);
+ip->updatePreview();}
+          tooltip {Colorbar tic format, as for printf.
+eN = engineering, N digits
+sN = scientific, N digits
+0 = no tic labels
+blank = no tics or labels.} xywh {110 505 80 20}
+        }
+      }
+      Fl_Group {} {
+        label Colorbar open
+        xywh {215 445 190 105} box DOWN_BOX align 5
+      } {
+        Fl_Check_Button colorbar {
+          label Draw
+          callback {ip->fetchSettings(this);
+ip->updatePreview();}
+          tooltip {Enable drawing the colorbar on the output plot.} xywh {225 505 70 15} down_box DOWN_BOX
+        }
+        Fl_Value_Input cbar_height_per {
+          label {Height (%)}
+          callback {ip->updatePreview();}
+          tooltip {Height in percent of the plot} xywh {295 480 105 20} maximum 100 value 75
+        }
+        Fl_Value_Input cbar_width {
+          label {Width (")}
+          callback {ip->updatePreview();}
+          tooltip {Width of colobar in inches} xywh {295 455 105 20} maximum 0 value 0.4
+        }
+        Fl_Button {} {
+          label {More Options...}
+          callback {if (win3->shown())
+	win3->hide();
+else
+	win3->show();}
+          xywh {265 525 130 20}
+        }
+        Fl_Check_Button rotate_cbar {
+          label Rotated
+          xywh {295 505 70 15} down_box DOWN_BOX deactivate
+        }
+      }
+      Fl_Group {} {
+        label Settings
+        xywh {10 575 190 85} box DOWN_BOX align 5
+      } {
+        Fl_Button {} {
+          label {Load Default}
+          callback {ip->loadPrintSettings("");}
+          xywh {20 582 85 20} labelsize 11
+        }
+        Fl_Button {} {
+          label {Save Default}
+          callback {ip->savePrintSettings("");}
+          xywh {20 609 85 20} labelsize 11
+        }
+        Fl_Button {} {
+          label {Load...}
+          callback {if (Fl::event_state() & FL_SHIFT)
+{
+	Fl_File_Chooser chooser(".", 
+			"(*.set)\\t",
+			Fl_File_Chooser::CREATE,
+			"Select files");
+	chooser.preview(0);
+	chooser.show();
+	while (chooser.shown()) Fl::wait();
+	if (chooser.value() == NULL) return;
+	ip->loadPrintSettings(chooser.value(1));
+}
+else
+{
+	char *fname = fl_file_chooser("Load Printer Settings","Printer Settings (*.set)",Image_Printer::settingsDir.c_str());
+	if(fname != NULL)
+  		ip->loadPrintSettings(fname);
+}}
+          tooltip {Hold down shift to load from current directory} xywh {110 582 80 20} labelsize 11
+        }
+        Fl_Button {} {
+          label {Save...}
+          callback {if (Fl::event_state() & FL_SHIFT)
+{
+	Fl_File_Chooser chooser(".", 
+			"(*.set)\\t",
+			Fl_File_Chooser::CREATE,
+			"Select files");
+	chooser.preview(0);
+	chooser.show();
+	while (chooser.shown()) Fl::wait();
+	if (chooser.value() == NULL) return;
+	ip->savePrintSettings(chooser.value(1));
+}
+else
+{
+	char *fname = fl_file_chooser("Load Printer Settings","Printer Settings (*.set)",Image_Printer::settingsDir.c_str());
+	if(fname != NULL)
+  		ip->savePrintSettings(fname);
+}
+char *fname = fl_file_chooser("Save Printer Settings","Printer Settings (*.set)",Image_Printer::settingsDir.c_str());
+if(fname != NULL)
+  ip->savePrintSettings(fname);} selected
+          tooltip {Hold down shift to load from current directory} xywh {110 609 80 20} labelsize 11
+        }
+        Fl_Button {} {
+          label {Preview && Formats....}
+          callback {if (win2->shown())
+ 	win2->hide();
+else
+	win2->show();}
+          xywh {20 635 170 20} labelsize 12
+        }
+      }
+      Fl_Button {} {
+        label Generate
+        callback {iw->exportPS();}
+        tooltip {Generate the PS output file} xywh {10 695 85 25} when 6
+      }
+      Fl_Button preview_button {
+        label {Open Preview}
+        callback {string command = preview_cmd->value();
+char *fn=iw->exportPS(); 
+if(fn != NULL)
+  {	
+  // This is also very obvious...
+  // http://www.ss64.com/nt/start.html
+\#ifdef WIN32
+    command = "\\"start \\"unneeded title\\" " + command + " \\"" + fn + "\\"\\"";
+\#else
+    command = command + " \\"" + fn + "\\" &";
+\#endif
+    info("%s\\n", command.c_str());
+    system(command.c_str());
+  }}
+        tooltip {Preview the generated PS file} xywh {100 695 105 25} when 6
+      }
+      Fl_Button live {
+        label {Live Preview}
+        callback {ip->startPreview();}
+        tooltip {Open up a "Live Preview" window} xywh {210 695 95 25}
+      }
+      Fl_Button {} {
+        label Dismiss
+        callback {win->hide();}
+        xywh {310 695 95 25}
+      }
+      Fl_Group {} {
+        label {Plot Range} open
+        xywh {215 575 190 85} box DOWN_BOX align 5
+      } {
+        Fl_Input xrange {
+          label X
+          callback {plotRange->value(Image_Printer::PLOT_MANUAL);
+ip->computePlotRange();
+ip->updatePreview();}
+          tooltip {xleft,xright (note: will not flip data!)} xywh {240 612 160 20}
+        }
+        Fl_Input yrange {
+          label Y
+          callback {plotRange->value(Image_Printer::PLOT_MANUAL);
+ip->computePlotRange();
+ip->updatePreview();}
+          tooltip {ybottom,ytop (note: will not flip data!)} xywh {240 632 160 20}
+        }
+        Fl_Choice plotRange {
+          label Range
+          callback {ip->updatePlotRange(this);
+ip->updatePreview();} open
+          tooltip {Select how data range is chosen} xywh {280 582 120 25} down_box BORDER_BOX
+        } {
+          MenuItem {} {
+            label Auto
+            user_data {Image_Printer::PLOT_ALL} user_data_type long
+            xywh {5 5 36 21}
+          }
+          MenuItem {} {
+            label Zoom
+            user_data {Image_Printer::PLOT_ZOOM} user_data_type long
+            xywh {5 5 36 21}
+          }
+          MenuItem {} {
+            label Manual
+            user_data {Image_Printer::PLOT_MANUAL} user_data_type long
+            xywh {5 5 36 21}
+          }
+        }
+      }
+      Fl_Check_Button increment {
+        label Inc
+        tooltip {Increment number after each print} xywh {142 667 45 22} down_box DOWN_BOX
+      }
+      Fl_Button {} {
+        label Colors
+        callback {pc->show();}
+        xywh {330 665 74 25}
+      }
+      Fl_Check_Button auto_inc {
+        label Auto
+        callback {if (auto_inc->value())
+{
+   increment->deactivate();
+   incnum->deactivate();
+}
+else
+{
+   increment->activate();
+   incnum->activate();
+}}
+        tooltip {Automatically pick next number so as not to overwrite an existing file} xywh {182 671 55 15} down_box DOWN_BOX
+      }
+      Fl_Counter incnum {
+        tooltip {Number used for next file} xywh {94 670 40 18} type Simple box THIN_UP_BOX align 4 step 1
+      }
+      Fl_Choice format {
+        label Format open
+        xywh {255 665 65 25} down_box BORDER_BOX hide
+      } {
+        MenuItem {} {
+          label {.PDF}
+          xywh {5 5 40 25}
+        }
+        MenuItem {} {
+          label {.PS}
+          xywh {5 5 40 25}
+        }
+      }
+      Fl_Check_Button do_number {
+        label {Number:}
+        tooltip {Append a number to each file name when printing} xywh {10 667 80 22} down_box DOWN_BOX
+      }
+    }
+    Fl_Window win2 {
+      label {Preview and formats} open
+      xywh {200 395 375 225} type Double resizable visible
+    } {
+      Fl_Button {} {
+        label dismiss
+        callback {win2->hide();}
+        xywh {270 198 95 22}
+      }
+      Fl_Input preview_cmd {
+        label {Postscript preview command (eg. gv or gsview)}
+        tooltip {postscript filename will be given as an argument} xywh {10 30 285 20} align 5 textsize 12
+      }
+      Fl_Input gs_cmd {
+        label {Ghostscript program:}
+        tooltip {how to execute ghostscript (needed for PDF and PNG formats)} xywh {10 75 285 20} align 5 textsize 12
+      }
+      Fl_Button {} {
+        label {Browse...}
+        callback {\#ifdef WIN32
+char *fname = fl_file_chooser("Select ghostscript command",
+		"*.exe\\t*.bat\\t*", 
+		"C:/Program Files/");
+\#else
+char *fname = fl_file_chooser("Select ghostscript command",
+		"*.exe\\t*.bat\\t*", 
+		"/usr/bin");
+\#endif
+
+if(fname != NULL)
+{
+  string quoted = "\\"";
+  quoted = quoted + fname + "\\"";
+  gs_cmd->value(quoted.c_str());
+}}
+        xywh {295 75 70 20} labelsize 12
+      }
+      Fl_Check_Button extra_png {
+        label {PNG }
+        xywh {21 157 70 15} down_box DOWN_BOX
+      }
+      Fl_Check_Button extra_pdf {
+        label PDF
+        xywh {21 135 70 15} down_box DOWN_BOX
+      }
+      Fl_Input png_dpi {
+        label dpi
+        tooltip {[basename].ps will be given as an argument} xywh {102 155 77 20} labelsize 12 textsize 12 resizable
+      }
+      Fl_Box {} {
+        label {Also generate the following formats:}
+        xywh {10 108 31 17} align 20
+      }
+      Fl_Button {} {
+        label {Browse...}
+        callback {\#ifdef WIN32
+char *fname = fl_file_chooser("Select preview command",
+		"*.exe\\t*.bat\\t*", 
+		"C:/Program Files/");
+\#else
+char *fname = fl_file_chooser("Select preview command",
+		"*.exe\\t*.bat\\t*", 
+		"/usr/bin");
+\#endif
+		
+if(fname != NULL)
+{
+  string quoted = "\\"";
+  quoted = quoted + fname + "\\"";
+  preview_cmd->value(quoted.c_str());
+}}
+        xywh {295 30 70 20} labelsize 12
+      }
+      Fl_Button {} {
+        label save
+        callback {ip->savePreviewSettings();}
+        tooltip {Save default preview & format settings} xywh {270 174 45 20}
+      }
+      Fl_Button {} {
+        label load
+        callback {ip->loadPreviewSettings();}
+        tooltip {Load default preview & format settings} xywh {320 174 45 20}
+      }
+      Fl_Check_Button cmyk {
+        label {use CMYK in PDF}
+        xywh {78 135 70 15} down_box DOWN_BOX
+      }
+      Fl_Check_Button extra_svs {
+        label {Spyview Settings}
+        xywh {21 179 70 15} down_box DOWN_BOX value 1
+      }
+      Fl_Check_Button extra_set {
+        label {Print Settings}
+        xywh {21 199 70 15} down_box DOWN_BOX value 1
+      }
+    }
+    code {\#ifdef WIN32
+live->deactivate();
+\#endif} {}
+    Fl_Window win3 {
+      label {Colorbar options} open
+      xywh {715 123 235 310} type Double visible
+    } {
+      Fl_Group {} {
+        label {Extra Colorbar Options} open
+        xywh {10 25 215 65} box DOWN_BOX align 5
+      } {
+        Fl_Input zscale {
+          label {Z Scale}
+          callback {ip->fetchSettings(this);}
+          tooltip {Scale factor for Z Axis} xywh {110 35 105 20} type Float
+        }
+        Fl_Value_Input cspacing {
+          label {Z spacing}
+          xywh {110 60 105 20}
+        }
+      }
+      Fl_Group {} {
+        label {Linear Colormap} open
+        xywh {10 120 215 150} box DOWN_BOX align 5
+      } {
+        Fl_Check_Button linear_cmap {
+          label {Enable linear colorscale}
+          tooltip {Plot the color on a linear scale with a non-linear data value spacing} xywh {20 135 70 15} down_box DOWN_BOX
+        }
+      }
+      Fl_Value_Input cmin {
+        label {Color min:}
+        tooltip {Color index to start at (0.0 to 1.0)} xywh {115 160 100 20}
+      }
+      Fl_Value_Input cmax {
+        label {Color max:}
+        tooltip {Color index to end at (0.0 to 1.0)} xywh {115 185 100 20} value 1
+      }
+      Fl_Value_Input cbegin {
+        label {Definitive label:}
+        tooltip {Pick one data value that we should try to have on the labels for sure (for example, 0)} xywh {115 210 100 20} labelsize 12
+      }
+      Fl_Value_Input clabelspacing {
+        label {LabelSpacing:}
+        xywh {115 235 100 20} labelsize 12 value 0.1
+      }
+      Fl_Button {} {
+        label Dismiss
+        callback {win3->hide();}
+        xywh {10 280 215 20}
+      }
+    }
+    Fl_Window pc {
+      label {Print Colors}
+      xywh {475 387 415 530} type Double hide
+    } {
+      Fl_Group text_color {
+        label Text
+        callback {ip->updatePreview();} open
+        xywh {0 20 200 95} box DOWN_BOX
+        code0 {o->rgb(0,0,0);}
+        class Fl_Color_Chooser
+      } {}
+      Fl_Group border_color {
+        label Border
+        callback {ip->updatePreview();} open
+        xywh {210 20 200 95} box DOWN_BOX
+        code0 {o->rgb(0,0,0);}
+        class Fl_Color_Chooser
+      } {}
+      Fl_Group large_tick_color {
+        label {Large Tick}
+        callback {ip->updatePreview();} open
+        xywh {0 140 200 95} box DOWN_BOX
+        code0 {o->rgb(1,1,1);}
+        class Fl_Color_Chooser
+      } {}
+      Fl_Group small_tick_color {
+        label {Small Tick}
+        callback {ip->updatePreview();} open
+        xywh {210 140 200 95} box DOWN_BOX
+        code0 {o->rgb(0,0,0);}
+        class Fl_Color_Chooser
+      } {}
+      Fl_Group linecut_color {
+        label Linecut
+        callback {ip->updatePreview();} open
+        xywh {0 265 200 95} box DOWN_BOX
+        code0 {o->rgb(1,0,0);}
+        class Fl_Color_Chooser
+      } {}
+      Fl_Group overlay_color {
+        label {Overlay Lines}
+        callback {ip->updatePreview();} open
+        xywh {215 265 200 95} box DOWN_BOX
+        code0 {o->rgb(0,0,1);}
+        class Fl_Color_Chooser
+      } {}
+      Fl_Button {} {
+        label Dismiss
+        callback {pc->hide();}
+        xywh {0 500 415 25}
+      }
+      Fl_Group zoombox_color {
+        label Zoombox
+        callback {ip->updatePreview();} open
+        xywh {0 400 200 95} box DOWN_BOX
+        code0 {o->rgb(0,1,0);}
+        class Fl_Color_Chooser
+      } {}
+    }
+  }
+} 

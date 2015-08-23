@@ -1,0 +1,118 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0105 
+header_name {.h} 
+code_name {.cxx}
+decl {\#include "ImageWindow.H"} {public
+} 
+
+decl {\#include "spynavigate.H"} {public
+} 
+
+Function {make_window()} {open
+} {
+  Fl_Window controls {
+    label controls selected
+    xywh {667 74 315 225} type Double resizable visible
+  } {
+    Fl_Output pattern_box {
+      label {File Pattern:}
+      xywh {100 35 210 25}
+    }
+    Fl_Value_Output xstartbox {
+      label {X start, inc, end:}
+      xywh {135 65 55 25} color 7
+    }
+    Fl_Value_Output xincbox {
+      xywh {195 65 55 25} color 7
+    }
+    Fl_Value_Output xendbox {
+      xywh {255 65 55 25} color 7
+    }
+    Fl_Value_Output ystartbox {
+      label {Y start, inc, end:}
+      xywh {135 95 55 25} color 7
+    }
+    Fl_Value_Output yincbox {
+      xywh {195 95 55 25} color 7
+    }
+    Fl_Value_Output yendbox {
+      xywh {255 95 55 25} color 7
+    }
+    Fl_Value_Output x_box {
+      label {Current Position (x,y):}
+      xywh {205 135 50 25} color 7
+    }
+    Fl_Value_Output y_box {
+      xywh {260 135 50 25} color 7
+    }
+    Fl_Output filename_box {
+      label {Current File:}
+      xywh {100 195 210 25}
+    }
+    Fl_Choice cmapch {
+      label {Colormap:}
+      callback cmapch_cb open
+      xywh {100 5 210 25} down_box BORDER_BOX
+    } {}
+    Fl_Value_Input output_counter {
+      label {Output Counter:}
+      xywh {205 165 100 25}
+    }
+  }
+  Fl_Window iw {
+    xywh {430 528 100 100} type Double
+    class ImageWindow visible
+  } {}
+  Fl_Window xsecwin {
+    label {3D Cross Section Control}
+    xywh {409 78 225 180} type Double visible
+  } {
+    Fl_Choice dim {
+      label {Dimension:}
+      callback {load_mtx_cut();}
+      xywh {95 5 125 25} down_box BORDER_BOX
+    } {}
+    Fl_Value_Input indexbox {
+      label {Index:}
+      callback {double val=indexbox->value();
+if (val > indexbox->maximum()) val = indexbox->maximum();
+else if (val < indexbox->minimum()) val = indexbox->minimum();
+indexslider->value(val);
+indexroller->value(val);
+indexbox->value(val);
+load_mtx_cut();}
+      xywh {60 35 35 25} when 8
+    }
+    Fl_Slider indexslider {
+      callback {indexbox->value(((Fl_Valuator *)o)->value());
+indexbox->do_callback();}
+      xywh {95 35 125 25} type {Horz Fill} step 1
+    }
+    Fl_Roller indexroller {
+      callback {indexbox->value(round(((Fl_Valuator *)o)->value()));
+indexbox->do_callback();}
+      xywh {60 60 160 20} type Horizontal step 0.25
+    }
+    Fl_Button {} {
+      label dismiss
+      callback {xsecwin->hide();}
+      xywh {135 150 85 25}
+    }
+    Fl_Value_Input datamax_box {
+      label datamax
+      callback {mtxd.datamax = datamax_box->value();
+load_mtx_cut();}
+      xywh {70 85 150 25} when 8
+    }
+    Fl_Value_Input datamin_box {
+      label datamin
+      callback {mtxd.datamin = datamin_box->value();
+load_mtx_cut();}
+      xywh {70 115 150 25} when 8
+    }
+    Fl_Light_Button mtx_adjust {
+      label {Adjust on load}
+      xywh {5 150 125 25} value 1
+    }
+  }
+} 

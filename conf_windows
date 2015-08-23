@@ -1,6 +1,0 @@
-#!/bin/bash -f
-export LDFLAGS="-L${HOME}/i586-mingw32msvc/lib -static"
-export CFLAGS="-I${HOME}/i586-mingw32msvc/include -ffast-math -Wall -mwindows"
-export CXXFLAGS=$CFLAGS
-./configure --host=i586-mingw32msvc --without-x --prefix=${HOME}/tmp/spyview $*
-

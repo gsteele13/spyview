@@ -1,0 +1,7 @@
+export CFLAGS="-arch x86_64"
+export CXX="clang++"
+export CXXFLAGS=$CFLAGS
+export CPPFLAGS="-I/opt/local/include/"
+export LDFLAGS="-L/opt/local/lib/ -g"
+export CPP='/usr/bin/cpp'
+./configure --prefix=$HOME --datarootdir=${HOME}/.spyview $*

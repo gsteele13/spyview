@@ -1,1 +1,0 @@
-i586-mingw32msvc-objdump -p spyview.exe | grep 'DLL Name:'

@@ -1,2 +1,0 @@
-shlibs:Depends=libboost-regex1.40.0 (>= 1.40.0-1), libboost-serialization1.40.0 (>= 1.40.0-1), libc6 (>= 2.1.3), libc6 (>= 2.3.6-6~), libfltk1.1 (>= 1.1.7), libgcc1 (>= 1:4.1.1), libgl1-mesa-glx | libgl1, libglu1-mesa | libglu1, libnetpbm10, libpng12-0 (>= 1.2.13-4), libstdc++6 (>= 4.2.1), libx11-6, libxext6, zlib1g (>= 1:1.1.4)
-misc:Depends=

@@ -1,0 +1,97 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.\" First parameter, NAME, should be all caps
+.\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
+.\" other parameters are allowed: see man(7), man(1)
+.TH SPYVIEW SECTION "May  6, 2003"
+.\" Please adjust this date whenever revising the manpage.
+.\"
+.\" Some roff macros, for reference:
+.\" .nh        disable hyphenation
+.\" .hy        enable hyphenation
+.\" .ad l      left justify
+.\" .ad b      justify to both left and right margins
+.\" .nf        disable filling
+.\" .fi        enable filling
+.\" .br        insert line break
+.\" .sp <n>    insert n+1 empty lines
+.\" for manpage-specific macros, see man(7)
+.SH NAME
+spyview \- program to do something
+.SH SYNOPSIS
+.B spyview3d
+.RI " files" ...
+.br
+.SH DESCRIPTION
+.PP 
+A 3d version of spyview implemented with OpenGL.
+.SH GUI SHORTCUTS
+.PP
+.B Button 1
+is used for rotating the 3D surface. A rotation of a rigid body is
+defined by three Euler angles: Theta, the rotation of the body Z-axis
+away from the original Z-axis, Psi, the rotation of the body about
+it's Z-axis, and Phi, the azimuthal rotation of the body Z-axis about
+the original Z-axis.
+.PP
+In spyview3d, Phi is fixed so that the image is always tilted towards
+you. The vertical motion of the mouse will adjust theta, the angle of
+this tilt, and the horizontal motion of the mouse will adjust the
+rotation of the body about it's z axis.
+.PP
+.B Button 2
+will adjust the scaling of the image. Horizontal motion will scale all
+three dimensions (zooming), while vertical motion will only adjust the
+z scaling of the surface.
+.PP
+.B Button 3
+allows you to translate the image.
+.PP
+.B c
+Show/hide the controls window.
+.SH CONTROL WINDOW SETTINGS
+.PP
+.B Grey
+will draw the surface all in one color. This is useful for
+investigating the effects of lighting.
+.PP 
+.B Colormap settings
+These give you some simple controls over how the colormap is applied to the
+image.
+.PP
+.B Save
+Render the opengl image to the specified format and filename using
+gl2ps: http://www.geuz.org/gl2ps/
+
+.SH LIGHTING CONTROLS
+.PP
+.B Type
+The light source can be set to be a point source or be directional.
+In the case of a directional source, the direction is set by the phi
+and theta angles, and the radius slider changes only the position of
+the light position indicator.
+.PP
+.B Ambient
+Adjust the intensity of the ambient lighting: this is a light source
+that lights the the surface uniformly from all directions.
+.PP
+.B Diffuse
+Adjust the intensity of the diffuse lighting: this light is radiated
+from a point source at the position given by the sliders below.  (In
+directional mode, the light is instead a plane was, as if from a point
+source at infinity.) With ambient lighting, light that hits the
+surface is re-radiated in all directions.
+.PP
+.B Specular
+Adjust the intensity of the specular lighting. Specular lighting
+reflects off of the surface (instead of being re-radiated). (Haven't
+got it to work yet...)
+.PP
+For more info about OpenGL lighting, see
+.PP
+http://www.sjbaker.org/steve/omniv/opengl_lighting.html.
+.SH SEE ALSO
+.BR spyview(1),
+.BR spybrowse(1)
+.SH AUTHOR
+This manual page was written by Gary Steele <gsteele@electron.mit.edu>,
+for the Debian project (but may be used by others).

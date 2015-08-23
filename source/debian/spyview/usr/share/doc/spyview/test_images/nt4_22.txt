@@ -1,0 +1,54 @@
+Measurement Started at 31/08/2008 12:06:58
+
+DAC0 "Drain (14)" 0.010000 100.000000
+DAC1 "SG1 Offset (13)" 0.100000 200.000000
+DAC2 "SG2 Offset (15)" 0.100000 200.000000
+DAC3 "BG Offset (1)" 0.093000 50.000000
+DAC4 "" 1.000000 100.000000
+DAC5 "" 1.000000 100.000000
+DAC6 "" 1.000000 100.000000
+DAC7 "" 1.000000 100.000000
+DAC8 "SG1 (13)" 1.000000 200.000000
+DAC9 "SG2 (15)" 1.000000 200.000000
+DAC10 "BG (1)" 0.909000 200.000000
+DAC11 "" 1.000000 100.000000
+DAC12 "" 1.000000 100.000000
+DAC13 "" 1.000000 100.000000
+DAC14 "" 1.000000 100.000000
+DAC15 "" 1.000000 100.000000
+
+DMM1 Name "Current DMM1 (pA)" Gain 1.000000E+0 External Scale 1.000000E+0
+DMM2 Name "Current DMM2 (pA)" Gain 1.000000E+0 External Scale 1.000000E+0
+
+Feedback loop enabled 0 Input 1 Output 11 Setpoint 7.400000E+1
+Gain 2.000000E-1 Max step 0.000000E+0 Min -2.000000E+3 Max 2.000000E+3 Threashold 2.500000E-1
+
+Magnet Status: 0.0000 T
+
+Sweep 9 from 263.000 to 317.000 in 100 steps and 0 ms wait time. Sweep var2 0 from -128.000 to -182.000000 .
+Loop 1 10 from -286.000 to 151.000 in 300 steps and 1000 ms wait time. Sweep var2 0 from 320.000 to 260.000000 .
+Loop 2 1 from -400.000 to 400.000 in 2 steps and 50 ms wait time. Sweep var2 0 from 268.000 to 316.000000 .
+DAC1 -400
+DAC2 0
+DAC3 0
+DAC4 0
+DAC5 0
+DAC6 0
+DAC7 0
+DAC8 0
+DAC9 263
+DAC10 -286
+DAC11 250
+DAC12 0
+DAC13 0
+DAC14 0
+DAC15 0
+DAC16 0
+Comments:
+
+M3 in Low Noise
+Sine OUT = 0.100 V
+Lockin Scale = 50 mV
+
+Number of sweeps completed: 600
+Measurement Finished at 31/08/2008 12:42:40

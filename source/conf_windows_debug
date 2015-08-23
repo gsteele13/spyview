@@ -1,0 +1,8 @@
+#!/bin/bash -f
+export LDFLAGS="-L${HOME}/i586-mingw32msvc/lib -g"
+#export CFLAGS="-I/home/odie/i586-mingw32msvc/include -O6 -ffast-math -fexpensive-optimizations -march=pentium"
+export CFLAGS="-I${HOME}/i586-mingw32msvc/include -O0 -ffast-math -Wall -mwindows -g"
+export CXXFLAGS=$CFLAGS
+./configure --host=i586-mingw32msvc --without-x --with-libxml2-include=${HOME}/i586-mingw32msvc/include/libxml2 --prefix=${HOME}/tmp/spyview $*
+echo  'winedbg --gdb ./spyview.exe pgm_name' will debug spyview with a gdb-like interface.
+

@@ -1,9 +1,0 @@
-#!/usr/bin/zsh
-# Rotate the pgm files on the command line ccw.
-# Warning; this does not use temporary files safely.
-foreach i ( $* ) ; do
-  c=`spyrot_comment $i`
-pnmflip -ccw $i > /tmp/spyrot_foo.pgm
-pnm_comment /tmp/spyrot_foo.pgm $c > $i
-rm /tmp/spyrot_foo.pgm
-done

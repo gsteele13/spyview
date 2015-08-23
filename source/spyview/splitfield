@@ -1,0 +1,22 @@
+#!/usr/bin/gawk -f 
+# usage: splitfield x < foo.txt > foo2.txt
+# take a data file, and insert a blank line each time column "x" changes
+
+BEGIN {
+col=ARGV[1];
+ARGV[1]="";
+
+lastcol = "foo";
+};
+
+{
+    if($0 ~ /^[:space:]*#/ || $0 ~ /^[:space:]*$/) {
+       print;
+       } else {
+	   if(lastcol != $col && lastcol != "foo") {
+	       print "";
+	   }
+	   lastcol=$col;
+	   print;
+       }
+}

@@ -1,0 +1,1615 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0107 
+header_name {.h} 
+code_name {.C}
+decl {\#include "spypal_interface.H"} {} 
+
+decl {\#include "ImageWindow.H"} {public
+} 
+
+decl {\#include "ImageData.H"} {public
+} 
+
+decl {\#include "spyview.H"} {public
+} 
+
+decl {\#include <math.h>} {public
+} 
+
+decl {\#include <vector>} {public
+} 
+
+decl {\#include <FL/Fl_File_Chooser.H>} {} 
+
+Function {make_window()} {open C return_type void
+} {
+  Fl_Window control {
+    label Controls open
+    xywh {507 252 570 425} type Double visible
+  } {
+    Fl_Choice filech {
+      label {file:}
+      callback filech_cb
+      xywh {50 5 190 25} down_box BORDER_BOX when 6
+    } {}
+    Fl_Light_Button plothistb {
+      label {Plot Hist.}
+      callback {iw->plot_hist = plothistb->value();
+iw->plotHist();}
+      xywh {75 35 75 25} labelsize 12
+    }
+    Fl_Light_Button plotcmapb {
+      label {Plot Colmap}
+      callback {iw->plot_cmap = plotcmapb->value();
+iw->plotCmap();}
+      xywh {155 35 85 25} labelsize 11
+    }
+    Fl_Value_Input centerv {
+      label center
+      callback {int newmin, newmax;
+int width = iw->hmax - iw->hmin;
+newmin = (int)centerv->value() - width/2;
+newmax = (int)centerv->value() + width/2;
+if (newmin < 0) 
+{ newmin = 0; newmax = width; }
+if (newmax > 65535)
+{ newmin = 65535 - width; newmax = 65535;}
+iw->hmin = newmin;
+iw->hmax = newmax;
+update_widgets();}
+      xywh {55 65 50 20} maximum 65535 step 1 textsize 9
+    }
+    Fl_Slider centerslider {
+      callback {centerv->value(centerslider->value());
+centerv->do_callback();}
+      xywh {105 65 135 20} type {Horz Fill} maximum 65535
+    }
+    Fl_Roller centerroller {
+      callback {centerv->value(centerroller->value());
+centerv->do_callback();}
+      xywh {105 85 135 20} type Horizontal maximum 65535 step 10
+    }
+    Fl_Value_Input centerv_units {
+      callback {int val = iw->id.raw_to_quant(centerv_units->value());
+centerv->value(val);
+centerv->do_callback();}
+      xywh {35 85 70 20} color 53 when 8 textsize 9
+    }
+    Fl_Value_Input widthv {
+      label width
+      callback {int newmin, newmax;
+int width = (int)widthv->value();
+if (width < 0) width = 0;
+if (width > 65535) width = 65535;
+int center = (iw->hmax + iw->hmin)/2;
+newmin = center - width/2;
+newmax = center + width/2;
+if (newmin < 0) newmin = 0;
+if (newmax > 65535) newmax = 65535;
+iw->hmax = newmax;
+iw->hmin = newmin;
+update_widgets();}
+      xywh {55 110 50 20} maximum 65535 step 1 value 1 textsize 9
+    }
+    Fl_Slider widthslider {
+      callback {widthv->value(widthslider->value());
+widthv->do_callback();}
+      xywh {105 110 135 20} type {Horz Fill} maximum 65535
+    }
+    Fl_Roller widthroller {
+      callback {widthv->value(widthroller->value());
+widthv->do_callback();}
+      xywh {105 130 135 20} type Horizontal maximum 65535 step 10
+    }
+    Fl_Value_Input widthv_units {
+      callback {int val = iw->id.raw_to_quant(widthv_units->value())-iw->id.raw_to_quant(0);;
+widthv->value(val);
+widthv->do_callback();}
+      xywh {35 130 70 20} color 53 when 8 textsize 9
+    }
+    Fl_Value_Input minv {
+      label min
+      callback {iw->setMin(minv->value());
+update_widgets();}
+      xywh {55 155 50 20} maximum 65535 step 1 textsize 9
+    }
+    Fl_Slider minslider {
+      callback {minv->value(minslider->value());
+minv->do_callback();}
+      xywh {105 155 135 20} type {Horz Fill} maximum 65535
+    }
+    Fl_Roller minroller {
+      callback {iw->setMin(minroller->value());
+update_widgets();}
+      xywh {105 175 135 20} type Horizontal maximum 65535 step 10
+    }
+    Fl_Value_Input minv_units {
+      callback {minv->value(iw->id.raw_to_quant(minv_units->value()));
+minv->do_callback();}
+      xywh {35 175 70 20} color 53 when 8 textsize 9
+    }
+    Fl_Value_Input maxv {
+      label max
+      callback {iw->setMax(maxv->value());
+update_widgets();}
+      xywh {55 200 50 20} maximum 65535 step 1 value 1 textsize 9
+    }
+    Fl_Slider maxslider {
+      callback {maxv->value(maxslider->value());
+maxv->do_callback();}
+      xywh {105 200 135 20} type {Horz Fill} maximum 65535
+    }
+    Fl_Roller maxroller {
+      callback {iw->setMax(maxroller->value());
+update_widgets();}
+      xywh {105 220 135 20} type Horizontal maximum 65535 step 10
+    }
+    Fl_Value_Input maxv_units {
+      callback {maxv->value(iw->id.raw_to_quant(maxv_units->value()));
+maxv->do_callback();}
+      xywh {35 220 70 20} color 52 when 8 textsize 9
+    }
+    Fl_Value_Input gammav {
+      label gamma
+      callback {iw->setGamma(gammav->value(), gcenterv->value());
+plotcmapb->do_callback();
+gammaroller->value(log(gammav->value()));
+gammaslider->value(log(gammav->value()));}
+      xywh {55 245 50 20} labelsize 12 when 8 value 1
+    }
+    Fl_Slider gammaslider {
+      callback {double val = round(exp(gammaslider->value())*1000)/1000;
+gammav->value(val);
+gammaroller->value(gammaslider->value());
+gammav->do_callback();}
+      xywh {105 245 135 20} type {Horz Fill} minimum -4.6 maximum 4.6 step 0.001
+    }
+    Fl_Roller gammaroller {
+      callback {double val = round(exp(gammaroller->value())*1000)/1000;
+gammav->value(val);
+gammaslider->value(gammaroller->value());
+gammav->do_callback();}
+      xywh {105 265 135 20} type Horizontal minimum -4.6 maximum 4.6
+    }
+    Fl_Light_Button squareb {
+      label Square
+      callback {iw->square = squareb->value();
+reload_data();}
+      xywh {5 335 85 25}
+    }
+    Fl_Button {} {
+      label {Image Processing}
+      callback {if (procwin->shown())
+ procwin->hide();
+else
+ procwin->show();}
+      xywh {95 335 145 25}
+    }
+    Fl_Button {} {
+      label {Axis Units && Ranges}
+      callback {if (unitswin->shown())
+ unitswin->hide();
+else
+ unitswin->show();}
+      xywh {5 365 140 25} labelsize 12
+    }
+    Fl_Choice cmapch {
+      label ColorMap
+      callback cmapch_cb open
+      xywh {315 5 140 25} down_box BORDER_BOX when 6
+    } {}
+    Fl_Light_Button invertb {
+      label Invert
+      callback {iw->invert = !iw->invert;
+cmapch->do_callback();}
+      tooltip {Individually invert each color channel} xywh {335 40 75 25}
+    }
+    Fl_Light_Button negateb {
+      label Negate
+      callback {iw->negate = negateb->value();
+cmapch->do_callback();}
+      tooltip {Negate the data before plotting} xywh {415 40 70 25}
+    }
+    Fl_Button normb {
+      label Normalize
+      callback {iw->normalize();
+update_widgets();}
+      xywh {250 40 80 25}
+    }
+    Fl_Button {} {
+      label {Load Options}
+      callback {if (normwin->shown())
+  normwin->hide();
+else 
+  normwin->show();}
+      xywh {250 70 115 25}
+    }
+    Fl_Value_Input bpbox {
+      label {Black %}
+      callback {iw->bpercent=bpbox->value();
+normb->do_callback();}
+      xywh {315 110 50 25} maximum 100 step 0.1
+    }
+    Fl_Value_Input wpbox {
+      label {White %}
+      callback {iw->wpercent=wpbox->value();
+normb->do_callback();}
+      xywh {435 110 50 25} maximum 100 step 0.1
+    }
+    Fl_Input savebox {
+      label {basename:}
+      callback {strncpy(iw->output_basename,savebox->value(),256);}
+      xywh {320 300 245 25} labelsize 11 textsize 10
+    }
+    Fl_Button saveb {
+      label {Save PPM}
+      callback saveb_cb
+      tooltip {Save color image as PPM} xywh {415 335 70 25} labelsize 12
+    }
+    Fl_Button dismissb {
+      label dismiss
+      callback {control->hide();}
+      xywh {460 365 60 25}
+    }
+    Fl_Button exitb {
+      label exit
+      callback {spyview_exit();}
+      xywh {525 365 40 25} shortcut 0x80071
+    }
+    Fl_Button {} {
+      label reset
+      callback {gammav->value(1);
+gammav->do_callback();}
+      xywh {55 265 50 20} labelsize 12
+    }
+    Fl_Button xsecb {
+      label {3D XSection}
+      callback {Fl_Window *w = xsecwin;
+if (w->shown())
+ w->hide();
+else
+ w->show();}
+      xywh {150 365 90 25} labelsize 12
+    }
+    Fl_Button {} {
+      label {Save MTX}
+      callback {//iw->exportGnuplot();
+iw->exportMTX(true);}
+      tooltip {Save the file with an MTX extension} xywh {250 335 80 25} labelsize 12
+    }
+    Fl_Button location_bar {
+      label button
+      callback {if (location_window->shown())
+   location_window->hide();
+else
+   location_window->show();}
+      xywh {5 395 210 25} labelsize 10 align 20
+    }
+    Fl_Output help_bar {
+      xywh {215 395 240 25} color 49 textfont 8 textsize 10
+    }
+    Fl_Box colormap_placeholder {
+      xywh {495 35 35 260} box DOWN_BOX
+    }
+    Fl_Button {} {
+      label {Save Cmap}
+      callback save_cmap_cb
+      xywh {495 5 70 25} labelsize 10
+    }
+    Fl_Button exportb {
+      label Export
+      callback {switch (export_type->value())
+{
+case 0:
+	iw->exportMTX();
+	break;
+case 1:
+	iw->exportPGM();
+	break;
+case 2:
+	iw->exportGnuplot();
+	break;
+case 3:
+	iw->exportMAT();
+	break;
+case 4:
+	iw->exportLinecut();
+	break;
+case 5:
+	iw->exportMatlab();
+	break;
+}}
+      tooltip {Export data to file basename.export.xxx} xywh {335 335 75 25}
+    }
+    Fl_Value_Input xzoom_value {
+      callback {iw->setXZoom(xzoom_value->value());}
+      tooltip {X Zoom} xywh {515 395 25 25} when 8 minimum -100 maximum 100
+    }
+    Fl_Value_Input yzoom_value {
+      callback {iw->setYZoom(yzoom_value->value());}
+      tooltip {Y  Zoom} xywh {540 395 25 25} when 8 minimum -100 maximum 100
+    }
+    Fl_Slider cmap_min {
+      callback {if (cmap_min->value() > cmap_max->value())
+	cmap_min->value(cmap_max->value());
+iw->cmap_min = cmap_min->value();
+cmapch->do_callback();}
+      xywh {534 35 15 260} minimum 1 maximum 0
+    }
+    Fl_Slider cmap_max {
+      callback {if (cmap_max->value() < cmap_min->value())
+	cmap_max->value(cmap_min->value());
+iw->cmap_max = cmap_max->value();
+cmapch->do_callback();}
+      xywh {550 35 15 260} minimum 1 maximum 0 value 1
+    }
+    Fl_Button {} {
+      label {Load...}
+      callback {Fl_Window *w = reload_window;
+if (w->shown())
+ w->hide();
+else
+ w->show();}
+      tooltip {Add or load new files from a pattern or browser} xywh {5 35 65 25} labelsize 13
+    }
+    Fl_Button {} {
+      label Postscript
+      callback {iw->setupPS();}
+      xywh {490 335 75 25} labelsize 12
+    }
+    Fl_Button {} {
+      label {Save Settings}
+      callback {if (Fl::event_state() & FL_SHIFT)
+{
+	Fl_File_Chooser chooser(".", 
+			"(*.svs)\\t",
+			Fl_File_Chooser::CREATE,
+			"Select files");
+	chooser.preview(0);
+	chooser.show();
+	while (chooser.shown()) Fl::wait();
+	if (chooser.value() == NULL) return;
+	savesettings(chooser.value(1));
+}
+else
+{
+	char *fname = fl_file_chooser("Save Settings","Settings (*.svs)",spyviewSettingsDir);
+	if(fname != NULL)
+	  savesettings(fname);
+}}
+      tooltip {Save the spyview settings} xywh {250 365 105 25} labelsize 12
+    }
+    Fl_Button {} {
+      label {Load Settings}
+      callback {if (Fl::event_state() & FL_SHIFT)
+{
+	Fl_File_Chooser chooser(".", 
+			"(*.svs)\\t",
+			Fl_File_Chooser::CREATE,
+			"Select files");
+	chooser.preview(0);
+	chooser.show();
+	while (chooser.shown()) Fl::wait();
+	if (chooser.value() == NULL) return;
+	loadsettings(chooser.value(1));
+}
+else
+{
+	char *fname = fl_file_chooser("Load Spyview Settings","Settings (*.svs)",spyviewSettingsDir);
+	if(fname != NULL)
+  		loadsettings(fname);
+}} selected
+      tooltip {Load the Spyview settings} xywh {360 365 95 25} labelsize 12
+    }
+    Fl_Value_Output xsize {
+      tooltip {Data Height} xywh {455 395 30 25} textsize 11
+    }
+    Fl_Value_Output ysize {
+      tooltip {Data Width} xywh {485 395 30 25} textsize 11
+    }
+    Fl_Value_Input gcenterv {
+      label gamma
+      callback {iw->setGamma(gammav->value(), gcenterv->value());
+plotcmapb->do_callback();
+gcenterroller->value(gcenterv->value());
+gcenterslider->value(gcenterv->value());}
+      xywh {55 290 50 20} labelsize 12 when 8 maximum 0.999
+    }
+    Fl_Slider gcenterslider {
+      callback {gcenterv->value(gcenterslider->value());
+gcenterv->do_callback();}
+      xywh {105 290 135 20} type {Horz Fill} maximum 0.999 step 0.001
+    }
+    Fl_Roller gcenterroller {
+      callback {gcenterv->value(gcenterroller->value());
+gcenterv->do_callback();}
+      xywh {105 310 135 20} type Horizontal maximum 0.999
+    }
+    Fl_Button {} {
+      label reset
+      callback {gcenterv->value(0);
+gcenterv->do_callback();}
+      xywh {55 310 50 20} labelsize 12
+    }
+    Fl_Box {} {
+      label center
+      xywh {20 308 32 17} labelsize 12 align 24
+    }
+    Fl_Choice export_type {
+      label {Export Type:}
+      xywh {350 270 135 25} down_box BORDER_BOX
+    } {
+      MenuItem {} {
+        label {.mtx}
+        xywh {0 0 34 21}
+      }
+      MenuItem {} {
+        label {.pgm}
+        xywh {0 0 34 21}
+      }
+      MenuItem {} {
+        label {.gp/.gnu (gnuplot)}
+        xywh {0 0 34 21}
+      }
+      MenuItem {} {
+        label {.dat (ascii matrix)}
+        xywh {0 0 34 21}
+      }
+      MenuItem {} {
+        label {linecut .dat}
+        xywh {10 10 34 21}
+      }
+      MenuItem {} {
+        label {.m (matlab script)}
+        xywh {10 10 34 21}
+      }
+    }
+    Fl_Button {} {
+      label {Edit cmap...}
+      callback {if (cmapedwin->shown())
+  cmapedwin->hide();
+else 
+  cmapedwin->show();}
+      xywh {370 70 115 25}
+    }
+    Fl_Button {} {
+      label {Fixed colors}
+      callback {norm_on_load->value(0);
+man_quant->value(1);
+a_quant->value(0);
+iw->id.auto_quant = false;
+iw->id.qmin = qmin->value();
+iw->id.qmax = qmax->value();
+info("Set qmin/qmax to %f %f\\n", qmin->value(), qmax->value());}
+      tooltip {Keep colormapping and quantization fixed for new images (Disable normalize and Autoquantize)} xywh {255 145 110 25}
+    }
+    Fl_Button {} {
+      label {Auto colors}
+      callback {norm_on_load->value(1);
+man_quant->value(0);
+a_quant->value(1);
+a_quant->do_callback();}
+      tooltip {Audjust colormap and quantization for each image (Re-enable normalize and auto quantize)} xywh {370 145 115 25}
+    }
+    Fl_Button {} {
+      label {Reload file}
+      callback {filech->do_callback();}
+      xywh {255 175 100 25}
+    }
+    Fl_Button {} {
+      label {Plane settings}
+      callback {if (plane_win->shown())
+	plane_win->hide();
+else 
+	plane_win->show();}
+      xywh {360 175 125 25}
+    }
+    Fl_Button {} {
+      label {Load default}
+      callback {loadColors();}
+      tooltip {Load colors from a ".colors" file with the default name (same as filename)} xywh {320 205 95 25} labelsize 12
+    }
+    Fl_Box {} {
+      label Color
+      xywh {255 218 55 17} labelsize 12 align 20
+    }
+    Fl_Button {} {
+      label {Save default}
+      callback {saveColors();}
+      tooltip {Save colors to a ".colors" file with the default name (same as filename)} xywh {320 235 95 25} labelsize 12
+    }
+    Fl_Button {} {
+      label {Load...}
+      callback {Fl_File_Chooser chooser(".", 
+			"(*.colors)\\t",
+			Fl_File_Chooser::SINGLE,
+			"Select files");
+chooser.preview(0);
+chooser.show();
+while (chooser.shown()) Fl::wait();
+if (chooser.value() == NULL) return;
+loadColors(chooser.value(1));}
+      tooltip {Load color settings from file} xywh {420 205 65 25} labelsize 12
+    }
+    Fl_Button {} {
+      label {Save...}
+      callback {Fl_File_Chooser chooser(".", 
+			"(*.colors)\\t",
+			Fl_File_Chooser::CREATE,
+			"Select files");
+chooser.preview(0);
+chooser.show();
+while (chooser.shown()) Fl::wait();
+if (chooser.value() == NULL) return;
+saveColors(chooser.value(1));}
+      tooltip {Save color settings to file} xywh {420 235 65 25} labelsize 12
+    }
+    Fl_Box {} {
+      label {Settings:}
+      xywh {255 236 55 19} labelsize 12 align 20
+    }
+    Fl_Button {} {
+      callback cmapedit_cb
+      tooltip {Edit the current colormap.  If the colormap is a .ppm file, an import wizard will open to help you convert it to .spp} image {edit.png} xywh {460 5 25 25}
+    }
+  }
+  Fl_Window iw {
+    label image
+    xywh {380 505 136 125} type Double hide resizable
+    class ImageWindow
+  } {}
+  Fl_Window procwin {
+    label {Image Processing}
+    xywh {343 79 330 445} type Double hide resizable
+  } {
+    Fl_Output proc_description {
+      xywh {0 420 330 25}
+    }
+    Fl_Input {} {
+      label {input:}
+      callback {Image_Operation *op = (Image_Operation *)last_proc_side->data(last_proc_side->value());
+if(op != NULL)
+  Fetch_ProcWindow_Settings(op);
+if(last_proc_side == pqueue)
+  reload_data();}
+      xywh {210 240 110 25} type Float
+      code0 {proc_parameters.push_back(o);}
+      code1 {o->hide();}
+    }
+    Fl_Input {} {
+      label {input:}
+      callback {Image_Operation *op = (Image_Operation *)last_proc_side->data(last_proc_side->value());
+if(op != NULL)
+  Fetch_ProcWindow_Settings(op);
+if(last_proc_side == pqueue)
+  reload_data();}
+      xywh {210 270 110 25} type Float
+      code0 {proc_parameters.push_back(o);}
+      code1 {o->hide();}
+    }
+    Fl_Input {} {
+      label {input:}
+      callback {Image_Operation *op = (Image_Operation *)last_proc_side->data(last_proc_side->value());
+if(op != NULL)
+  Fetch_ProcWindow_Settings(op);
+if(last_proc_side == pqueue)
+  reload_data();}
+      xywh {210 300 110 25} type Float
+      code0 {proc_parameters.push_back(o);}
+      code1 {o->hide();}
+    }
+    Fl_Input {} {
+      label {input:}
+      callback {Image_Operation *op = (Image_Operation *)last_proc_side->data(last_proc_side->value());
+if(op != NULL)
+  Fetch_ProcWindow_Settings(op);
+if(last_proc_side == pqueue)
+  reload_data();}
+      xywh {210 330 110 25} type Float
+      code0 {proc_parameters.push_back(o);}
+      code1 {o->hide();}
+    }
+    Fl_Input {} {
+      label {input:}
+      callback {Image_Operation *op = (Image_Operation *)last_proc_side->data(last_proc_side->value());
+if(op != NULL)
+  Fetch_ProcWindow_Settings(op);
+if(last_proc_side == pqueue)
+  reload_data();}
+      xywh {210 360 110 25} type Float
+      code0 {proc_parameters.push_back(o);}
+      code1 {o->hide();}
+    }
+    Fl_Check_Button {} {
+      label button
+      callback {Image_Operation *op = (Image_Operation *)last_proc_side->data(last_proc_side->value());
+if(op != NULL)
+  Fetch_ProcWindow_Settings(op);
+if(last_proc_side == pqueue)
+  reload_data();}
+      xywh {300 240 20 25} down_box DOWN_BOX align 4
+      code0 {proc_bool_parameters.push_back(o);}
+      code1 {o->hide();}
+    }
+    Fl_Check_Button {} {
+      label button
+      callback {Image_Operation *op = (Image_Operation *)last_proc_side->data(last_proc_side->value());
+if(op != NULL)
+  Fetch_ProcWindow_Settings(op);
+if(last_proc_side == pqueue)
+  reload_data();}
+      xywh {300 270 20 25} down_box DOWN_BOX align 4
+      code0 {proc_bool_parameters.push_back(o);}
+      code1 {o->hide();}
+    }
+    Fl_Check_Button {} {
+      label button
+      callback {Image_Operation *op = (Image_Operation *)last_proc_side->data(last_proc_side->value());
+if(op != NULL)
+  Fetch_ProcWindow_Settings(op);
+if(last_proc_side == pqueue)
+  reload_data();}
+      xywh {300 300 20 25} down_box DOWN_BOX align 4
+      code0 {proc_bool_parameters.push_back(o);}
+      code1 {o->hide();}
+    }
+    Fl_Check_Button {} {
+      label button
+      callback {Image_Operation *op = (Image_Operation *)last_proc_side->data(last_proc_side->value());
+if(op != NULL)
+  Fetch_ProcWindow_Settings(op);
+if(last_proc_side == pqueue)
+  reload_data();}
+      xywh {300 330 20 25} down_box DOWN_BOX align 4
+      code0 {proc_bool_parameters.push_back(o);}
+      code1 {o->hide();}
+    }
+    Fl_Check_Button {} {
+      label button
+      callback {Image_Operation *op = (Image_Operation *)last_proc_side->data(last_proc_side->value());
+if(op != NULL)
+  Fetch_ProcWindow_Settings(op);
+if(last_proc_side == pqueue)
+  reload_data();}
+      xywh {300 360 20 25} down_box DOWN_BOX align 4
+      code0 {proc_bool_parameters.push_back(o);}
+      code1 {o->hide();}
+    }
+    Fl_Check_Button enable_filter {
+      label {&Enable Filter}
+      callback {Image_Operation *op = (Image_Operation *)last_proc_side->data(last_proc_side->value());
+if(op != NULL)
+  Fetch_ProcWindow_Settings(op);
+if(last_proc_side == pqueue)
+  reload_data();}
+      xywh {10 390 110 25} down_box DOWN_BOX when 1 deactivate
+    }
+    Fl_Group {} {open
+      xywh {0 0 330 385} resizable
+    } {
+      Fl_Browser options {
+        label Options
+        callback {Image_Operation *op = (Image_Operation *)o->data(o->value());
+if(op != NULL)
+  Set_ProcWindow_Settings(op);
+last_proc_side = o;
+pqueue->deselect();}
+        xywh {10 20 110 365} type Hold align 1
+      }
+      Fl_Browser pqueue {
+        label Queue
+        callback {Image_Operation *op = (Image_Operation *)o->data(o->value());
+last_proc_side = o;
+if(op != NULL)
+  Set_ProcWindow_Settings(op);
+options->deselect();}
+        xywh {210 20 110 215} type Hold align 1
+      }
+      Fl_Button {} {
+        label {@->  add}
+        callback {int n = options->value();
+Image_Operation *op = (Image_Operation *)options->data(n);
+if(op != NULL)
+{
+  Add_Image_Operation(op);
+  reload_data();
+  pqueue->select(pqueue->size());
+  pqueue->do_callback();
+}
+else
+{
+  if (n != 0)
+    pqueue->add(options->text(n));
+  reload_data();
+  pqueue->select(pqueue->size());
+  pqueue->do_callback();  
+}}
+        xywh {130 20 70 20} align 16
+      }
+      Fl_Button {} {
+        label remove
+        callback {int n = pqueue->value();
+if (n != 0)
+{
+  Image_Operation *op = (Image_Operation *)pqueue->data(n);
+  delete op; // This is safe ; delete does nothing if op is null.
+  pqueue->remove(n);
+  reload_data();
+}}
+        xywh {130 105 70 20}
+      }
+      Fl_Button {} {
+        label clear
+        callback {for(int i = 1; i < pqueue->size(); i++)
+{
+  Image_Operation *op = (Image_Operation *)pqueue->data(i);
+  delete op;
+}
+pqueue->clear();
+reload_data();}
+        xywh {130 130 70 20}
+      }
+      Fl_Button {} {
+        label {up @8->}
+        callback {int n = pqueue->value();
+if (n > 1)
+{
+ pqueue->move(n,n-1);
+ reload_data();
+ }}
+        xywh {130 50 70 20} align 16
+      }
+      Fl_Button {} {
+        label {down @2}
+        callback {int n = pqueue->value();
+if ((n > 0) && (n < pqueue->size()))
+{
+ pqueue->move(n,n+1);
+ reload_data();
+}}
+        xywh {130 75 70 20} align 16
+      }
+      Fl_Button {} {
+        label dismiss
+        callback {procwin->hide();}
+        xywh {130 215 70 20}
+      }
+      Fl_Button {} {
+        label def
+        callback {loadImageProcessing();}
+        tooltip {Load with default name} xywh {175 160 25 20} labelsize 10
+      }
+      Fl_Button {} {
+        label def
+        callback {saveImageProcessing()}
+        tooltip {Save with default name} xywh {175 185 25 20} labelsize 10
+      }
+      Fl_Button {} {
+        label {Load...}
+        callback {Fl_File_Chooser chooser(".", 
+			"(*.img_proc)\\t",
+			Fl_File_Chooser::SINGLE,
+			"Select files");
+chooser.preview(0);
+chooser.show();
+while (chooser.shown()) Fl::wait();
+if (chooser.value() == NULL) return;
+loadImageProcessing(chooser.value(1));}
+        xywh {130 160 45 20} labelsize 10
+      }
+      Fl_Button {} {
+        label {Save...}
+        callback {Fl_File_Chooser chooser(".", 
+			"(*.img_proc)\\t",
+			Fl_File_Chooser::CREATE,
+			"Select files");
+chooser.preview(0);
+chooser.show();
+while (chooser.shown()) Fl::wait();
+if (chooser.value() == NULL) return;
+saveImageProcessing(chooser.value(1));}
+        xywh {130 185 45 20} labelsize 10
+      }
+    }
+    Fl_Choice {} {
+      label {choice:}
+      callback {Image_Operation *op = (Image_Operation *)last_proc_side->data(last_proc_side->value());
+if(op != NULL)
+  Fetch_ProcWindow_Settings(op);
+if(last_proc_side == pqueue)
+  reload_data();} open
+      xywh {210 240 110 25} down_box BORDER_BOX
+      code0 {proc_choice_parameters.push_back(o);}
+      code1 {o->hide();}
+    } {}
+    Fl_Choice {} {
+      label {choice:}
+      callback {Image_Operation *op = (Image_Operation *)last_proc_side->data(last_proc_side->value());
+if(op != NULL)
+  Fetch_ProcWindow_Settings(op);
+if(last_proc_side == pqueue)
+  reload_data();} open
+      xywh {210 270 110 25} down_box BORDER_BOX
+      code0 {proc_choice_parameters.push_back(o);}
+      code1 {o->hide();}
+    } {}
+    Fl_Choice {} {
+      label {choice:}
+      callback {Image_Operation *op = (Image_Operation *)last_proc_side->data(last_proc_side->value());
+if(op != NULL)
+  Fetch_ProcWindow_Settings(op);
+if(last_proc_side == pqueue)
+  reload_data();} open
+      xywh {210 300 110 25} down_box BORDER_BOX
+      code0 {proc_choice_parameters.push_back(o);}
+      code1 {o->hide();}
+    } {}
+    Fl_Choice {} {
+      label {choice:}
+      callback {Image_Operation *op = (Image_Operation *)last_proc_side->data(last_proc_side->value());
+if(op != NULL)
+  Fetch_ProcWindow_Settings(op);
+if(last_proc_side == pqueue)
+  reload_data();} open
+      xywh {210 330 110 25} down_box BORDER_BOX
+      code0 {proc_choice_parameters.push_back(o);}
+      code1 {o->hide();}
+    } {}
+    Fl_Choice {} {
+      label {choice:}
+      callback {Image_Operation *op = (Image_Operation *)last_proc_side->data(last_proc_side->value());
+if(op != NULL)
+  Fetch_ProcWindow_Settings(op);
+if(last_proc_side == pqueue)
+  reload_data();} open
+      xywh {210 360 110 25} down_box BORDER_BOX
+      code0 {proc_choice_parameters.push_back(o);}
+      code1 {o->hide();}
+    } {}
+    Fl_Button {} {
+      label button
+      xywh {120 390 95 25}
+      code0 {proc_button_parameters.push_back(o);}
+      code1 {o->hide();}
+    }
+    Fl_Button {} {
+      label button
+      xywh {225 390 95 25}
+      code0 {proc_button_parameters.push_back(o);}
+      code1 {o->hide();}
+    }
+  }
+  Fl_Window normwin {
+    label {Options on Loading File}
+    xywh {814 531 275 485} type Double hide
+  } {
+    Fl_Box {} {
+      label {Window Size:}
+      xywh {5 371 135 24} labelfont 1 align 20
+    }
+    Fl_Button {} {
+      label Dismiss
+      callback {normwin->hide();}
+      xywh {190 450 75 25}
+    }
+    Fl_Group {} {
+      xywh {25 388 185 67}
+    } {
+      Fl_Round_Button keep_zoom {
+        label {Keep Zoom}
+        callback {iw->window_size_action = KEEPZOOM;}
+        xywh {25 394 170 25} type Radio down_box ROUND_DOWN_BOX value 1
+      }
+      Fl_Round_Button keep_size {
+        label {Keep Size}
+        callback {iw->window_size_action = KEEPSIZE;}
+        xywh {25 419 170 25} type Radio down_box ROUND_DOWN_BOX
+      }
+      Fl_Round_Button reset_zoom {
+        label {Reset zoom}
+        callback {iw->window_size_action = RESETZOOM;}
+        xywh {135 394 70 25} type Radio down_box ROUND_DOWN_BOX
+      }
+    }
+    Fl_Check_Button norm_on_load {
+      label Normalize
+      xywh {25 35 95 15} down_box DOWN_BOX value 1
+    }
+    Fl_Box {} {
+      label {Contrast Adjustments:}
+      xywh {5 6 135 24} labelfont 1 align 20
+    }
+    Fl_Box {} {
+      label {Quantization Control:}
+      xywh {5 56 135 24} labelfont 1 align 20
+    }
+    Fl_Group {} {
+      callback {iw->id.auto_quant = true;} open
+      xywh {25 80 170 90}
+    } {
+      Fl_Round_Button a_quant {
+        label {Auto Quantize:}
+        callback {iw->id.auto_quant = true;}
+        tooltip {Automatically pick quantization} xywh {25 85 120 15} type Radio down_box ROUND_DOWN_BOX value 1
+      }
+      Fl_Round_Button man_quant {
+        label {Manually set Min/Max:}
+        callback {iw->id.auto_quant = false;}
+        xywh {25 110 170 15} type Radio down_box ROUND_DOWN_BOX
+      }
+    }
+    Fl_Value_Input a_quant_percent {
+      label {Percent:}
+      callback {iw->id.auto_quant_percent = a_quant_percent->value();
+requantize->do_callback();}
+      tooltip {Percent of dynamic range to use} xywh {220 82 45 20} labelsize 12 when 8 maximum 1000 value 50
+    }
+    Fl_Group manual_quant {open
+      xywh {60 130 211 57}
+    } {
+      Fl_Value_Input qmin {
+        label {Min:}
+        callback {iw->id.qmin = qmin->value();}
+        xywh {70 135 115 20}
+      }
+      Fl_Value_Input qmax {
+        label {Max:}
+        callback {iw->id.qmax = qmax->value();}
+        xywh {70 160 115 20}
+      }
+      Fl_Button {} {
+        label {Use Slider}
+        callback {double d1 = minv_units->value();
+double d2 = maxv_units->value();
+qmin->value(-0.5*d2+1.5*d1);
+qmin->do_callback();}
+        tooltip {Pick value based on "Min" slider in control window} xywh {190 135 75 20} labelsize 12
+      }
+      Fl_Button {} {
+        label {Use Slider}
+        callback {double d1 = minv_units->value();
+double d2 = maxv_units->value();
+qmax->value(1.5*d2+0.5*d1);
+qmax->do_callback();}
+        tooltip {Pick value based on "Max" slider in control window} xywh {190 160 75 20} labelsize 12
+      }
+    }
+    Fl_Box {} {
+      label {DAT File Handling:}
+      xywh {5 191 135 24} labelfont 1 align 20
+    }
+    Fl_Group {} {open
+      xywh {25 195 240 165}
+    } {
+      Fl_Round_Button dat_type_mat {
+        label {Matrix Format}
+        callback {iw->id.datfile_type = MATRIX;}
+        xywh {25 220 115 15} type Radio down_box ROUND_DOWN_BOX value 1
+      }
+      Fl_Round_Button dat_type_gp {
+        label {Gnuplot Format}
+        callback {iw->id.datfile_type = GNUPLOT;}
+        xywh {25 245 130 15} type Radio down_box ROUND_DOWN_BOX
+      }
+      Fl_Group {} {open
+        xywh {45 265 105 50}
+      } {
+        Fl_Round_Button gp_type_col {
+          label 2D
+          callback {iw->id.gpload_type = COLUMNS;}
+          tooltip {3rd dimension from column number (indices ignored)} xywh {45 270 70 15} type Radio down_box ROUND_DOWN_BOX value 1
+        }
+        Fl_Round_Button gp_type_index {
+          label 3D
+          callback {//info("type is: %d\\n", iw->id.gpload_type);
+iw->id.gpload_type = INDEX;
+//info("type is: %d\\n", iw->id.gpload_type);}
+          tooltip {3rd dimension from index number} xywh {45 295 70 15} type Radio down_box ROUND_DOWN_BOX
+        }
+      }
+      Fl_Round_Button dat_type_delft {
+        label {Delft Legacy Format}
+        callback {iw->id.datfile_type = DELFT_LEGACY;}
+        xywh {25 320 155 15} type Radio down_box ROUND_DOWN_BOX
+      }
+      Fl_Check_Button gp_parse_txt {
+        label {Parse txt file}
+        callback {iw->id.mtx.parse_txt = gp_parse_txt->value();}
+        tooltip {Read metadata from the delft txt file} xywh {145 265 70 15} down_box DOWN_BOX labelsize 10
+      }
+      Fl_Check_Button gp_delft_raw {
+        label {Raw units}
+        callback {iw->id.mtx.delft_raw_units = gp_delft_raw->value();}
+        tooltip {Use the raw units from the deflt txt file} xywh {145 280 70 15} down_box DOWN_BOX labelsize 10
+      }
+      Fl_Round_Button dat_type_meta {
+        label {DAT with meta.txt}
+        callback {iw->id.datfile_type = DAT_META;}
+        xywh {25 345 155 15} type Radio down_box ROUND_DOWN_BOX
+      }
+      Fl_Check_Button gp_delft_set {
+        label Settings
+        callback {iw->id.mtx.delft_settings = gp_delft_set->value();}
+        tooltip {Put settings in "sweep" axis name} xywh {145 295 70 15} down_box DOWN_BOX labelsize 10
+      }
+    }
+    Fl_Button requantize {
+      label Requantize
+      callback {double imgmin = minv_units->value();
+double imgmax = maxv_units->value();
+
+iw->id.qmin = qmin->value();
+iw->id.qmax = qmax->value();
+
+iw->id.quantize();
+iw->setMin(iw->id.raw_to_quant(imgmin));
+iw->setMax(iw->id.raw_to_quant(imgmax));
+update_widgets();}
+      xywh {10 450 100 25}
+    }
+    Fl_Button {} {
+      label Reload
+      callback {filech->do_callback();}
+      xywh {115 450 70 25}
+    }
+    Fl_Value_Input gp_col {
+      label {Col \#:}
+      callback {iw->id.gp_column = gp_col->value()-1;}
+      tooltip {Set column for 3D data, or default displayed column for 2D data\\nNote: first column is 1!} xywh {205 242 45 20} labelsize 12
+    }
+  }
+  Fl_Window unitswin {
+    label Units
+    xywh {214 275 290 235} type Double hide resizable
+  } {
+    Fl_Group {} {
+      xywh {200 25 85 85} resizable
+    } {}
+    Fl_Value_Input xmin {
+      label X
+      callback {set_units();}
+      tooltip {left of image} xywh {20 25 85 25} when 4
+    }
+    Fl_Value_Input xmax {
+      callback {set_units();}
+      tooltip {right of image} xywh {110 25 85 25} when 4
+    }
+    Fl_Input xunitname {
+      callback {set_units();}
+      xywh {200 25 85 25}
+    }
+    Fl_Value_Input ymin {
+      label Y
+      callback {set_units();}
+      tooltip {bottom of image} xywh {20 55 85 25} when 4
+    }
+    Fl_Value_Input ymax {
+      callback {set_units();}
+      tooltip {top of image} xywh {110 55 85 25} when 4
+    }
+    Fl_Input yunitname {
+      callback {set_units();}
+      xywh {200 55 85 25}
+    }
+    Fl_Value_Input zmin {
+      xywh {20 85 85 25} when 4 deactivate
+    }
+    Fl_Value_Input zmax {
+      xywh {110 85 85 25} when 4 deactivate
+    }
+    Fl_Input zunitname {
+      callback {set_units();}
+      xywh {200 85 85 25}
+    }
+    Fl_Box {} {
+      label Unit
+      xywh {200 3 85 25}
+    }
+    Fl_Box {} {
+      label {Min (b/l)}
+      xywh {20 3 85 25}
+    }
+    Fl_Box {} {
+      label {Max (t/r)}
+      xywh {110 3 85 25}
+    }
+    Fl_Input gpusing {
+      label {Gnuplot "using" string:}
+      callback {snprintf(iw->gp_using_string, 256, "%s", gpusing->value());
+iw->plotLineCut();}
+      xywh {5 130 210 25} align 1
+    }
+    Fl_Input gpwith {
+      label {GP "with":}
+      callback {iw->gp_with_string = gpwith->value();
+iw->plotLineCut();}
+      tooltip {Line style (gnuplot "with ...")} xywh {220 130 65 25} align 1
+    }
+    Fl_Input {} {
+      label {Send Gnuplot Command}
+      callback {if(iw->gplinecut.isopen())
+  iw->gplinecut.cmd("%s\\nreplot\\n",o->value());
+o->position(0,o->size());}
+      xywh {5 175 210 25} align 1 when 8
+    }
+    Fl_Button {} {
+      label Dismiss
+      callback {unitswin->hide();}
+      xywh {200 205 85 25}
+    }
+    Fl_Choice axis_type {
+      label {Diag. LC axis:}
+      callback {if (axis_type->value() == 0)
+  iw->lc_axis = XAXIS;
+else if (axis_type->value() == 1)
+  iw->lc_axis = YAXIS;
+else
+  iw->lc_axis = DISTANCE;
+
+iw->plotLineCut();} open
+      tooltip {Data to use for x-axis on diagonal line cuts} xywh {110 205 85 25} down_box BORDER_BOX
+    } {
+      MenuItem {} {
+        label {X axis}
+        xywh {0 0 34 21}
+      }
+      MenuItem {} {
+        label {Y axis}
+        xywh {0 0 34 21}
+      }
+      MenuItem {} {
+        label Distance
+        xywh {0 0 34 21}
+      }
+    }
+    Fl_Box {} {
+      xywh {200 25 85 85}
+    }
+    Fl_Box {} {
+      label Z
+      xywh {-3 88 32 17}
+    }
+    Fl_Light_Button xrange {
+      label Auto
+      callback {iw->line_cut_xauto = xrange->value();}
+      xywh {220 175 65 25}
+    }
+    Fl_Box {} {
+      label {Xrange:}
+      xywh {219 158 55 15} align 20
+    }
+  }
+  Fl_Window xsecwin {
+    label {3D Cross Section Control} open
+    xywh {119 211 295 210} type Double resizable visible
+  } {
+    Fl_Group units3d {
+      xywh {60 20 230 80} resizable
+    } {
+      Fl_Input mtx_xname {
+        label {Name:}
+        callback {set_3d_units();}
+        xywh {60 20 80 20}
+      }
+      Fl_Input mtx_yname {
+        callback {set_3d_units();}
+        xywh {140 20 75 20}
+      }
+      Fl_Input mtx_zname {
+        callback {set_3d_units();}
+        xywh {215 20 75 20}
+      }
+      Fl_Value_Input mtx_xmin {
+        label {Min:}
+        callback {set_3d_units();}
+        xywh {60 60 80 20} when 4
+      }
+      Fl_Value_Input mtx_ymin {
+        callback {set_3d_units();}
+        xywh {140 60 75 20} when 4
+      }
+      Fl_Value_Input mtx_zmin {
+        callback {set_3d_units();}
+        xywh {215 60 75 20} when 4
+      }
+      Fl_Value_Input mtx_xmax {
+        label {Max:}
+        callback {set_3d_units();}
+        xywh {60 80 80 20} when 4
+      }
+      Fl_Value_Input mtx_ymax {
+        callback {set_3d_units();}
+        xywh {140 80 75 20} when 4
+      }
+      Fl_Value_Input mtx_zmax {
+        callback {set_3d_units();}
+        xywh {215 80 75 20} when 4
+      }
+      Fl_Value_Output mtx_x {
+        label {Size:}
+        xywh {60 40 80 20} box DOWN_BOX
+      }
+      Fl_Value_Output mtx_y {
+        xywh {140 40 75 20}
+      }
+      Fl_Value_Output mtx_z {
+        xywh {215 40 75 20}
+      }
+    }
+    Fl_Group controls3d {open
+      xywh {10 105 280 40}
+    } {
+      Fl_Value_Input indexbox {
+        label {Index:}
+        callback {double val=indexbox->value();
+indexslider->value(val);
+indexroller->value(val);
+indexbox->value(val);
+iw->load_mtx_cut( indexbox->value(), (mtxcut_t)(int)dim->mvalue()->user_data());
+if (norm_on_load->value())
+    iw->normalize();
+update_title();}
+        xywh {55 105 35 20} when 8
+      }
+      Fl_Slider indexslider {
+        callback {indexbox->value(indexslider->value());
+indexbox->do_callback();}
+        xywh {90 105 200 20} type {Horz Fill} step 1
+      }
+      Fl_Roller indexroller {
+        callback {indexbox->value(indexroller->value());
+indexbox->do_callback();}
+        xywh {90 125 200 20} type Horizontal step 1
+      }
+      Fl_Value_Output index_value {
+        xywh {10 125 80 20}
+      }
+    }
+    Fl_Group {} {
+      xywh {95 150 80 25}
+    } {
+      Fl_Group {} {open
+        xywh {95 150 80 25}
+      } {
+        Fl_Choice dim {
+          label {Dimension:}
+          callback {//info("dim has value %d\\n", dim->value());
+iw->load_mtx_cut(indexbox->value(), (mtxcut_t)(int)dim->mvalue()->user_data());
+if (norm_on_load->value())
+    iw->normalize();} open
+          xywh {95 150 80 25} down_box BORDER_BOX align 36
+        } {
+          MenuItem {} {
+            label YZ
+            user_data YZ user_data_type long
+            xywh {0 0 34 21}
+          }
+          MenuItem {} {
+            label ZX
+            user_data XZ user_data_type long
+            xywh {0 0 34 21}
+          }
+          MenuItem {} {
+            label XY
+            user_data XY user_data_type long
+            xywh {0 0 34 21}
+          }
+        }
+      }
+    }
+    Fl_Box {} {
+      label Z
+      xywh {235 3 32 17}
+    }
+    Fl_Box {} {
+      label Y
+      xywh {160 3 32 17}
+    }
+    Fl_Box {} {
+      label X
+      xywh {85 3 32 17}
+    }
+    Fl_Button {} {
+      label dismiss
+      callback {xsecwin->hide();}
+      xywh {10 180 280 25}
+    }
+    Fl_Light_Button mtx_label {
+      label Label
+      callback {iw->id.do_mtx_cut_title = mtx_label->value();
+indexbox->do_callback();}
+      tooltip {Label data name (Z name in units) with the cross section position} xywh {180 150 110 25}
+    }
+  }
+  Fl_Window reload_window {
+    label {Load Files}
+    xywh {919 593 360 65} type Double hide
+  } {
+    Fl_Input reload_text {
+      label {Pattern:}
+      callback reload_cb
+      tooltip {Enter a list of files or shell wildcards} xywh {65 5 285 25} when 10
+    }
+    Fl_Button {} {
+      label Dismiss
+      callback {reload_window->hide();}
+      xywh {260 35 90 25}
+    }
+    Fl_Button {} {
+      label {Browse...}
+      callback {Fl_File_Chooser chooser(".", 
+			"Spyview Files (*.{mtx,pgm,dat,Stm})\\t"
+			"MTX (*.mtx)\\t"
+			"PGM (*.pgm)\\t"
+			"dat (*.dat)\\t"
+			"Stm (*.Stm)\\t",
+			Fl_File_Chooser::MULTI,
+			"Select files");
+chooser.preview(0);
+chooser.show();
+while (chooser.shown()) Fl::wait();
+if (chooser.value() == NULL) return;
+
+if (replaceb->value()) clear_files();
+
+for ( int i=1; i<=chooser.count(); i++ ) 
+{
+	info("adding %s\\n", chooser.value(i));
+	add_file(chooser.value(i));
+}
+
+if (check_loaded() == 0)
+{
+      warn("No files found!! Reverting to the list\\nof files given on command line.");
+      load_orig_files();
+}
+
+filech->value(0);
+filech->do_callback();}
+      xywh {160 35 95 25}
+    }
+    Fl_Group {} {open
+      xywh {5 35 170 25}
+    } {
+      Fl_Round_Button {} {
+        label Add
+        xywh {15 40 70 15} type Radio down_box ROUND_DOWN_BOX
+      }
+      Fl_Round_Button replaceb {
+        label Replace
+        xywh {70 40 70 15} type Radio down_box ROUND_DOWN_BOX value 1
+      }
+    }
+  }
+  Fl_Window cmapedwin {
+    label {Colormap Editor}
+    xywh {93 381 250 90} type Double hide
+  } {
+    Fl_Value_Slider cmrot {
+      callback {double val = cmrot->value();
+if (val < -360.1)
+  val = val - 360.0*floor(val/360.0);
+if (val > 360.1 || val < -360.1)
+  val = val - 360.0*ceil(val/360.0);
+iw->colormap_rotation_angle=val;
+cmrot_roller->value(val);
+cmrot->value(val);
+cmapch->do_callback();}
+      xywh {45 10 195 20} type {Horz Fill} align 4 minimum -360 maximum 360 step 0.1
+    }
+    Fl_Button {} {
+      label zero
+      callback {cmrot->value(0.0);
+cmrot->do_callback();}
+      xywh {45 30 35 20} labelsize 9
+    }
+    Fl_Button m60 {
+      label {-60}
+      callback {cmrot->value(cmrot->value()-60);
+cmrot->do_callback();}
+      xywh {80 30 25 20} labelsize 9
+    }
+    Fl_Roller cmrot_roller {
+      callback {cmrot->value(cmrot_roller->value());
+cmrot->do_callback();}
+      xywh {105 30 110 20} type Horizontal minimum -360 maximum 360 step 0.1
+    }
+    Fl_Button p60 {
+      label {+60}
+      callback {cmrot->value(cmrot->value()+60);
+cmrot->do_callback();}
+      xywh {215 30 25 20} labelsize 9
+    }
+    Fl_Box {} {
+      label HSV
+      xywh {10 5 25 25}
+    }
+    Fl_Box {} {
+      label {Rot.}
+      xywh {10 20 25 25}
+    }
+    Fl_Button {} {
+      label Dismiss
+      callback {cmapedwin->hide();}
+      xywh {10 58 230 25}
+    }
+  }
+  Fl_Window location_window {
+    label {Cursor Position}
+    xywh {365 337 395 160} type Double hide resizable
+  } {
+    Fl_Output location_x {
+      label X
+      xywh {45 20 145 20} color 49 labelsize 12 align 1 textfont 8 textsize 10
+    }
+    Fl_Output location_y {
+      label Y
+      xywh {240 20 150 20} color 49 labelsize 12 align 1 textfont 8 textsize 10
+    }
+    Fl_Output location_data {
+      xywh {250 45 140 20} color 49 labelsize 11 textfont 8 textsize 10
+    }
+    Fl_Input location_fmt {
+      label {Format:}
+      xywh {65 135 125 20} labelsize 12 when 1 textsize 12
+    }
+    Fl_Button {} {
+      label dismiss
+      callback {location_window->hide();}
+      xywh {195 135 195 20} labelsize 12
+    }
+    Fl_Group zoom_group {open
+      xywh {0 63 390 67}
+    } {
+      Fl_Output zx1v {
+        xywh {45 85 145 20} color 49 labelsize 12 align 1 textfont 8 textsize 10
+      }
+      Fl_Output zx2v {
+        xywh {45 105 145 20} color 49 labelsize 12 align 1 textfont 8 textsize 10
+      }
+      Fl_Output zy2v {
+        xywh {240 105 145 20} color 49 labelsize 12 align 1 textfont 8 textsize 10
+      }
+      Fl_Output zy1v {
+        xywh {240 85 145 20} color 49 labelsize 12 align 1 textfont 8 textsize 10
+      }
+      Fl_Value_Output zx1 {
+        xywh {5 85 40 20} textsize 10
+      }
+      Fl_Value_Output zx2 {
+        xywh {5 105 40 20} textsize 10
+      }
+      Fl_Value_Output zy2 {
+        xywh {200 105 40 20} textsize 10
+      }
+      Fl_Value_Output zy1 {
+        xywh {200 85 40 20} textsize 10
+      }
+      Fl_Box {} {
+        label {Zoom Window:}
+        xywh {5 68 32 17} labelsize 11 align 20
+      }
+    }
+    Fl_Value_Output x_col {
+      xywh {5 20 40 20} textsize 10
+    }
+    Fl_Value_Output y_row {
+      xywh {200 20 40 20} textsize 10
+    }
+    Fl_Output data_name {
+      xywh {5 45 245 20} box NO_BOX color 49 labelsize 11 textfont 8 textsize 10
+    }
+  }
+  Fl_Window helpwin {
+    xywh {124 26 325 500} type Double hide resizable
+  } {
+    Fl_Text_Display help_text {
+      xywh {5 5 315 465} textfont 5 textsize 11 resizable
+    }
+    Fl_Button {} {
+      label Dismiss
+      callback {helpwin->hide();}
+      xywh {5 475 315 20}
+    }
+  }
+  Fl_Window plane_win {
+    label {Plane subtraction}
+    xywh {214 329 245 165} type Double hide
+  } {
+    Fl_Light_Button planeb {
+      label {Subt. Plane}
+      callback {iw->plane = planeb->value();
+iw->redraw();
+iw->plotLineCut();}
+      tooltip {Enable or disable the plane correction} xywh {5 5 115 25}
+    }
+    Fl_Button fitplane {
+      label Fit
+      callback {iw->fit_plane();
+update_widgets();
+iw->normalize();
+iw->redraw();
+iw->plotLineCut();}
+      tooltip {Do a least-squares fit of the plane correction to the data set} xywh {125 5 55 25}
+    }
+    Fl_Button zeroplane {
+      label {Zero }
+      callback {plane_a->value(0.0);
+plane_a->do_callback();
+plane_b->value(0.0);
+plane_b->do_callback();}
+      tooltip {Zero the plane correction} xywh {185 5 55 25}
+    }
+    Fl_Value_Input plane_a {
+      label {Vert:}
+      callback {iw->plane_a = (65535.0/(double)iw->h)*plane_a->value();
+info("plane_a %.3f iw->plane_a %.3f\\n", plane_a->value(), iw->plane_a);
+plane_aroller->value(plane_a->value());
+plane_aslider->value(plane_a->value());
+iw->redraw();
+iw->calculateHistogram();
+iw->plotLineCut();
+update_widgets();
+info("plane_a %.3f iw->plane_a %.3f\\n\\n", plane_a->value(), iw->plane_a);}
+      xywh {55 40 70 20} when 8 minimum -2 maximum 2
+    }
+    Fl_Slider plane_aslider {
+      callback {plane_a->value(((Fl_Valuator *) o)->value() );
+plane_a->do_callback();}
+      xywh {125 40 115 20} type {Horz Fill} minimum -2 maximum 2 step 0.0001
+    }
+    Fl_Roller plane_aroller {
+      callback {plane_a->value(((Fl_Valuator *) o)->value() );
+plane_a->do_callback();}
+      xywh {55 60 185 20} type Horizontal minimum -2 maximum 2 step 0.0001
+    }
+    Fl_Value_Input plane_b {
+      label {Horz:}
+      callback {iw->plane_b = (65535.0/(double)iw->w)*plane_b->value();
+plane_broller->value(plane_b->value());
+plane_bslider->value(plane_b->value());
+iw->redraw();
+iw->calculateHistogram();
+iw->plotLineCut();
+update_widgets();}
+      xywh {55 90 70 20} when 8 minimum -2 maximum 2
+    }
+    Fl_Slider plane_bslider {
+      callback {plane_b->value(((Fl_Valuator *) o)->value() );
+plane_b->do_callback();}
+      xywh {125 90 115 20} type {Horz Fill} minimum -2 maximum 2 step 0.0001
+    }
+    Fl_Roller plane_broller {
+      callback {plane_b->value(((Fl_Valuator *) o)->value() );
+plane_b->do_callback();}
+      xywh {55 110 185 20} type Horizontal minimum -2 maximum 2 step 0.0001
+    }
+    Fl_Button {} {
+      label dismiss
+      callback {plane_win->hide();}
+      xywh {5 135 235 25}
+    }
+  }
+} 
+
+decl {std::vector<Fl_Input *> proc_parameters;} {public
+} 
+
+decl {Fl_Browser *last_proc_side; // Last side clicked on in the proc window} {public
+} 
+
+decl {std::vector<Fl_Check_Button *> proc_bool_parameters;} {public
+} 
+
+decl {std::vector<Fl_Choice *> proc_choice_parameters;} {public
+} 
+
+decl {std::vector<Fl_Button *> proc_button_parameters;} {public
+} 
+
+Function {reload_data()} {open
+} {
+  code {iw->reRunQueue();
+if (norm_on_load->value())
+    iw->normalize();} {}
+} 
