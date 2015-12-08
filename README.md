@@ -1,20 +1,33 @@
 # Spyview
-Spyview
 
-Original source code: http://nsweb.tn.tudelft.nl/~gsteele/spyview/
+A data plotting and exploration program I wrote during my PhD: 
 
-This code was forked from https://github.com/wakass/spyview
+http://nsweb.tn.tudelft.nl/~gsteele/spyview/
 
-This is a first attempt to combine all dependend libraries and binaries into one .app bundle.
+I'm hosting it now on github, and have included a good first attempt by Ben to bundle it into a .app, and also from a github user "wakass" who cleaned up the c++ pointer casts to compile properly with clang (thanks wakass, whoever you are!).
 
-# Installation
+# To Do list
 
-## Requires gnuplot
-Easiest via homebrew:
+IT’S ALIVE AGAIN! TODO list 2015!
 
-> ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+Easy and useful:
 
-> brew install gnuplot --with-x11
+- Keystroke for dismissing windows
+- Button for loading printer settings from current directory?
 
-## Install Spyview
-https://github.com/benschneider/spyview/raw/master/Mac_installation/spyview.dmg
+Harder and very useful:
+
+- Add “plot waterfall option?” Maybe with a gui? And a gnuplot script output option? 
+
+Harder and moderately (or maybe minorly useful):
+
+- Load data from images using FL_IMAGE class (low priority)
+- Save colorized data as PNG using FL_IMAGE
+
+# Changelog
+
+I maintain a changelog on the website:
+
+http://nsweb.tn.tudelft.nl/~gsteele/spyview/#news
+
+
