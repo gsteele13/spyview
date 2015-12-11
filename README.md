@@ -10,6 +10,10 @@ I'm hosting it now on github, and have included some updates from github users, 
 
 IT’S ALIVE AGAIN! TODO list 2015!
 
+Bugfixes:
+
+- Fix loading of data axes from meta.txt files? Somehow it doesn't work right now (at least with Mario's data?) It could be that a bugfix didn't make it through, or maybe Mario is using a broken python meta.txt generator (in which case it might be good to add a "broken meta.txt" button / option to support legacy files)
+
 Easy and useful:
 
 - Keystroke for dismissing windows
