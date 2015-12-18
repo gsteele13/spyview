@@ -12,7 +12,6 @@ IT’S ALIVE AGAIN! TODO list 2015!
 
 Bugfixes:
 
-- Fix loading of data axes from meta.txt files? Somehow it doesn't work right now (at least with Mario's data?) It could be that a bugfix didn't make it through, or maybe Mario is using a broken python meta.txt generator (in which case it might be good to add a "broken meta.txt" button / option to support legacy files)
 
 Easy and useful:
 
@@ -30,9 +29,13 @@ Harder and maybe not so useful:
 - Load data from images using FL_IMAGE class (low priority)
 - Save colorized data as PNG using FL_IMAGE
 
+# Done list
+
+- Fix loading of data axes from meta.txt files? Somehow it doesn't work right now (at least with Mario's data?) It could be that a bugfix didn't make it through, or maybe Mario is using a broken python meta.txt generator (in which case it might be good to add a "broken meta.txt" button / option to support legacy files). Turned out it was just that the clang-fixed code was from a branch before I fixed some meta.txt loading bugs.
+
 # Changelog
 
-I maintain a changelog on the website:
+I maintain an old changelog on the website:
 
 http://nsweb.tn.tudelft.nl/~gsteele/spyview/#news
 
