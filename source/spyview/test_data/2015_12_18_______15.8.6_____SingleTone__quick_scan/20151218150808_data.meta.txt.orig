@@ -1,0 +1,18 @@
+#inner loop
+101
+4000000000.0
+4400000000.0
+Frequency [Hz]
+#outer loop
+41
+5
+-5
+Current [V_adwin]
+#outer most loop
+1
+0.0
+0.0
+None
+#values
+4
+Transmission

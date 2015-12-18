@@ -1,0 +1,7 @@
+{
+    "device": "Kurma6A_C",
+    "emails": "mario.f.gely@gmail.com",
+    "experiment": "quick_scan",
+    "name": "Sal",
+    "notes": "Just added the ADwin\n\nHardware:\n-10 dB attenuation added on cavity line\n-20 dB qubit attenuation"
+}

@@ -3404,19 +3404,16 @@ int MTX_Data::load_dat_meta(const char *name, int col)
   int i,j,k;
   int i0, j0, k0;
 
-  // In test file from Vincent, the meta.txt code is getting the wrong order?
-  // for (k=0; k<size[2]; k++)
-  //   {
-  //     for (j=0; j<size[1]; j++)
-  // 	{
-  // 	  for (i=0; i<size[0]; i++)
-  // 	    {
-  for (i=0; i<size[0]; i++)
+  // 31 Oct 2013
+  // 
+  // Meta files are completely broken. I will got back to an older
+  // version of the code that seems to work.
+  for (k=0; k<size[2]; k++)
     {
-      for (j=size[1]-1; j>=0; j--) // flip y data around in matrix...
-	{
-	  for (k=0; k<size[2]; k++)
-	    {
+      for (j=0; j<size[1]; j++)
+  	{
+  	  for (i=0; i<size[0]; i++)
+  	    {
 	      if (incomplete) // fill matrix
 		getData(i,j,k) = last_val;
 	      else // otherwise try to get new data

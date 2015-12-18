@@ -1,0 +1,23 @@
+Filename: 20151218150808_data.dat
+Timestamp: Fri Dec 18 15:08:08 2015
+
+Instrument: curr_source_adwin
+	DAC_1: 0.0
+	DAC_2: 0.0
+	DAC_3: 0.0
+	DAC_4: 0.0
+	clockcycle: None
+	rampsteps: None
+Instrument: pna
+	averages: 1
+	measurement_format: MLOG
+	measurement_type: S21
+	power: 10.0
+	power_state: None
+	resolution_bandwidth: 100.0
+	start_frequency: 4000000000.0
+	stop_frequency: 4400000000.0
+	sweeppoints: 101.0
+	sweeptime: None
+Instrument: var_att
+	var_att: 70
