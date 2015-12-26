@@ -12,12 +12,16 @@ IT’S ALIVE AGAIN! TODO list 2015!
 
 Bugfixes:
 
+- Shift zoom (horizontal) not working on mac (although they are working for zoom window?)
+- Colorbar display not working on mac
+- Mouse button order not always displayed in window title
 
 Easy and useful:
 
 - Keystroke for dismissing windows
 - Button for loading printer settings from current directory?
 - Start building a "remote interface" protocol to control spyview via stdin (Mario working on it?)
+- Save/load setting based on file basename
 
 Harder and very useful:
 
