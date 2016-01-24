@@ -15,6 +15,7 @@ Bugfixes:
 - Shift zoom (horizontal) not working on mac (although they are working for zoom window?)
 - Colorbar display not working on mac
 - Mouse button order not always displayed in window title
+- enabling gnuplot inteface debugging causes segfault? related to vfprintf(stderr,...)?
 
 Easy and useful:
 
