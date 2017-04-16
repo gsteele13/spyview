@@ -25,8 +25,6 @@
 #define POINTSOURCE 1
 #define DIRECTIONAL 2
 
-#include "mypam.h"
-
 using namespace std;
 
 #define LMAX USHRT_MAX

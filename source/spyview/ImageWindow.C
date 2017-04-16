@@ -12,6 +12,8 @@
 #include "ImageWindow_Module.H"
 #include <ctype.h>
 
+#include "mypam.h"
+
 #ifdef WIN32
 
 #include <windows.h>

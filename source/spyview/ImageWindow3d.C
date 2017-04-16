@@ -5,6 +5,8 @@
 #define LINEMESH 2
 #define POLYGONS 3
 
+#include "mypam.h"
+
 ImageWindow3d::ImageWindow3d(int x,int y,int w,int h,const char *l) : Fl_Gl_Window(x,y,w,h,l) 
 {
     data_matrix = NULL;
