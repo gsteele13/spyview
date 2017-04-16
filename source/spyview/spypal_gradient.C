@@ -22,7 +22,7 @@ void Spypal_Slider_Dragger::start_dragging(Fl_Spypal_GSlider *todrag, bool can_d
   assert(dragging == NULL);
   can_delete = can_delete_p;
   dragging = todrag;
-  colored = false;
+  colored = NULL;
   shown = find(g->sliders.begin(),g->sliders.end(), dragging) != g->sliders.end();
   if(!shown && (Fl::event_inside(g) || !can_delete))
     show_dragged();
