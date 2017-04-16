@@ -22,7 +22,8 @@
 
 #define CHECK_ARRAY_LIMITS 0
 
-using namespace std;
+using std::string;
+using std::vector;
 
 typedef enum { YZ = 0, XY = 2, XZ = 1 }  mtxcut_t;
 typedef enum { COLUMNS = 0, INDEX = 1}  gpload_t;

@@ -25,7 +25,7 @@
 #define POINTSOURCE 1
 #define DIRECTIONAL 2
 
-using namespace std;
+
 
 #define LMAX USHRT_MAX
 

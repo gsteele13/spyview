@@ -10,6 +10,8 @@
 #include <vector>
 #include "spyview_ui.h"
 
+using std::string;
+
 /*void minl_cb(Fl_Widget *, void *);
 void maxl_cb(Fl_Widget *, void *);
 void dminl_cb(Fl_Widget *, void *);

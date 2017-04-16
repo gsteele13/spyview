@@ -9,6 +9,9 @@
 #include "mypam.h"
 #include "../config.h"
 
+#include <cmath>
+using std::isnan;
+
 #include <algorithm>
 // From http://www.redhat.com/docs/manuals/enterprise/RHEL-3-Manual/gcc/variadic-macros.html
 
@@ -2007,7 +2010,7 @@ void ImageData::grad_mag(double axis_bias)
   xderv();
   width = w;
   height = h;
-  swap(tmpx,raw_data);
+  std::swap(tmpx,raw_data);
   yderv();
   width = w;
   height = h;
@@ -2083,7 +2086,7 @@ void ImageData::dderv(double theta) // theta in degrees!
   xderv();
   width = w;
   height = h;
-  swap(tmpx,raw_data);
+  std::swap(tmpx,raw_data);
   yderv();
   width = w;
   height = h;

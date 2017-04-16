@@ -2,7 +2,9 @@
 #define __bisector_h__
 #include <assert.h>
 #include <math.h>
-using namespace std;
+
+#include <cmath>
+using std::isnan;
 
 class bisector
 {
