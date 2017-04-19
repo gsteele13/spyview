@@ -12,6 +12,11 @@
 #include "ImageWindow_Module.H"
 #include <ctype.h>
 
+#include <cmath>
+using std::isnan;
+
+#include "mypam.h"
+
 #ifdef WIN32
 
 #include <windows.h>
@@ -35,8 +40,6 @@
 #define shift(state) (!(state & FL_CTRL) &&  (state & FL_SHIFT) && !(state & FL_ALT))
 #define alt(state)   (!(state & FL_CTRL) && !(state & FL_SHIFT) &&  (state & FL_ALT))
 #define none(state)  (!(state & FL_CTRL) && !(state & FL_SHIFT) && !(state & FL_ALT))
-
-using namespace std;
 
 FILE *fopenwarn(const char *name, const char *mode)
 {
@@ -482,7 +485,7 @@ double current_time()
   stop.tv_usec = (long)(tmpres % 1000000UL);
 #endif
   double time = (((double)(stop.tv_sec)) + ((double)(stop.tv_usec) * 1e-6));
-  if (!isnormal(time))
+  if (!std::isnormal(time))
     info("time %e sec %d usec %d\n", time, stop.tv_sec, stop.tv_usec);
   return time;
 }
@@ -1609,7 +1612,7 @@ void ImageWindow::runQueue()
  	  for (int n=0; n<op->num_parameters; n++)
 	    {
 	      operations_string += "-";
-	      ostringstream os;
+	      std::ostringstream os;
 	      os << op->parameters[n].value;
 	      operations_string += os.str();
 	    }

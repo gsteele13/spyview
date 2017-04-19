@@ -11,7 +11,7 @@
 
 #include "ImagePrinter_Control.h"
 
-using namespace std;
+using std::string;
 
 class ImageWindow;
 class Image_Printer_Control;

@@ -27,8 +27,6 @@
 #include "spypal_import.H"
 #include <libgen.h>
 
-using namespace std;
-
 //How's this for lazy...?
 char **arg_values;
 int arg_count;

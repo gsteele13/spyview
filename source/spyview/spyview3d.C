@@ -18,8 +18,6 @@
 
 #include "mypam.h"
 
-using namespace std;
-
 int *data;
 int *databuf;
 int w,h;

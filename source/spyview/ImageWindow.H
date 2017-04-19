@@ -32,7 +32,7 @@
 #define VERTLINE 4
 #define OTHERLINE 8
 
-#include "mypam.h"
+using std::string;
 
 typedef enum { XAXIS, YAXIS, DISTANCE } lc_axis_t;
 typedef enum { KEEPZOOM, KEEPSIZE, RESETZOOM } window_size_action_t;
