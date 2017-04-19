@@ -27,6 +27,10 @@ AM_CONDITIONAL(WINDOWS,test $windows_target = yes)
 AC_PROG_CXX
 AC_PROG_CC
 AM_PROG_CC_C_O
+
+# Check for C++11 language standard
+AX_CXX_COMPILE_STDCXX([11], [noext], [mandatory])
+
 # Check for fluid
 AC_PATH_PROG(FLUID,fluid,none)
 AC_ARG_VAR(FLUID,[path to executable to compile .fl files])
