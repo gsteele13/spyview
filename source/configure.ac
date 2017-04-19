@@ -6,6 +6,9 @@ AC_CONFIG_SRCDIR([spyview/ImageWindow.C])
 AC_CONFIG_HEADER([config.h])
 USER_DIRS
 
+# For local macros
+AC_CONFIG_MACRO_DIR([m4])
+
 #
 # Work out our target
 #
