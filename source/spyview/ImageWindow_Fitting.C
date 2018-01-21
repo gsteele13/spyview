@@ -1028,7 +1028,7 @@ void Fitting::UpdateUndoCount()
   if(undoStack.size() > 0)
     {
       fc->undo->activate();
-      snprintf(ubuf,sizeof(ubuf),"Undo ("_STF")",undoStack.size());
+      snprintf(ubuf,sizeof(ubuf),"Undo (",_STF,")",undoStack.size());
       fc->undo->label(ubuf);
     }
   else
@@ -1040,7 +1040,7 @@ void Fitting::UpdateUndoCount()
   if(redoStack.size() > 0)
     {
       fc->redo->activate();
-      snprintf(rbuf,sizeof(rbuf),"Redo ("_STF")",redoStack.size());
+      snprintf(rbuf,sizeof(rbuf),"Redo (",_STF,")",redoStack.size());
       fc->redo->label(rbuf);
     }
   else

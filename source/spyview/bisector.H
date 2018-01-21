@@ -9,7 +9,7 @@ using std::isnan;
 class bisector
 {
 public:
-  static const double factor=0.5;
+  static constexpr double factor=0.5;
   double x1, x2, fx1, fx2;
   double acc;
   int iter;
@@ -69,7 +69,7 @@ public:
 class magic_bisector
 {
 public:
-  static const double factor=0.5;
+  static constexpr double factor=0.5;
   bool bisection;
   double nx, nfx;
   double x1, fx1, x2, fx2, mest;

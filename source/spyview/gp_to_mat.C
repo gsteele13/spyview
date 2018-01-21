@@ -196,7 +196,7 @@ int main(int argc, char **argv)
   double xmax = xs.rbegin()->first;
   double ymin = ys.begin()->first;
   double ymax = ys.rbegin()->first;
-  fprintf(stdout,"#pre-cull size: "_STF","_STF"\n",xs.size(),ys.size());
+  fprintf(stdout,"#pre-cull size: ",_STF,",",_STF,"\n",xs.size(),ys.size());
 
   // Setup our mapping from double to column number
   int xsize,ysize;
