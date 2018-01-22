@@ -132,8 +132,8 @@ extern const cc_CIExyY_class cc_CIExyY;
 class cc_CIELuv_class : public ccspace
 {
 protected:
-  static const double un = 0.2009;
-  static const double vn = 0.4610;
+  static constexpr double un = 0.2009;
+  static constexpr double vn = 0.4610;
 public:
   cc_CIELuv_class(){}
   bool get(const ccolor &c, double &L, double &u, double &v) const
@@ -181,7 +181,7 @@ class cc_CIELAB_class : public ccspace
 {
 private:
   // Crap for LAB-XYZ conversions.  Lotsa magic numbers.
-  static const double delta=6.0/29.0;
+  static constexpr double delta=6.0/29.0;
   inline double labF(double x) const // From CIELAB def'n
   {
     if(x > delta*delta*delta)
@@ -234,8 +234,8 @@ extern const cc_CIELAB_class cc_CIELAB;
 class cc_sRGB_class : public ccspace
 {
 private:
-  static const double a = 0.055;
-  static const double c=0.0031308;
+  static constexpr double a = 0.055;
+  static constexpr double c=0.0031308;
 
   // Crap for sRGB-XYZ conversions. Lotsa magic.				
   double srgbF(double x) const
@@ -361,12 +361,12 @@ class cc_CIECAM02_LMS_class : public ccspace
 {
 public:
   cc_CIECAM02_LMS_class(){}
-  static const double F = 1.0;
-  static const double c_const = 0.525;
-  static const double Nc = 1.0;
+  static constexpr double F = 1.0;
+  static constexpr double c_const = 0.525;
+  static constexpr double Nc = 1.0;
 
-  static const double Lw = 300; // Luminance of typical display.
-  static const double La = 60.0; // "Gray world"; Lw/5.0
+  static constexpr double Lw = 300; // Luminance of typical display.
+  static constexpr double La = 60.0; // "Gray world"; Lw/5.0
 
   // We skip color adaption/spectral sharpening.  Not relevant here.
   // Hunt-Pointer-Estevez transform, equal energy illuminants.  
@@ -427,12 +427,12 @@ class cc_CIECAM02_Jab_class : public ccspace
 {
 public:
   cc_CIECAM02_Jab_class(){}
-  static const double F = 1.0;
-  static const double c_const = 0.525;
-  static const double Nc = 1.0;
+  static constexpr double F = 1.0;
+  static constexpr double c_const = 0.525;
+  static constexpr double Nc = 1.0;
 
-  static const double Lw = 300.0; // Luminance of typical display.
-  static const double La = 60.0; // "Gray world"; Lw/5.0
+  static constexpr double Lw = 300.0; // Luminance of typical display.
+  static constexpr double La = 60.0; // "Gray world"; Lw/5.0
 
   // We skip color adaption/spectral sharpening.  Not relevant here.
   // Hunt-Pointer-Estevez transform, equal energy illuminants.  

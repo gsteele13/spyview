@@ -2845,7 +2845,7 @@ int MTX_Data::load_gp_cols(const char *name)
 
 void MTX_Data::get_settings(const char *comments)
 {
-  char *p = strstr(comments, "Loop 2");
+  const char *p = strstr(comments, "Loop 2");
   p = strstr(p, "DAC");
   
   info("getting settings\n");

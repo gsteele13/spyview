@@ -684,7 +684,7 @@ int main(int argc, char **argv)
 
   load_orig_files();
 
-  info("Found "_STF" files\n", filenames.size());
+  info("Found ",_STF," files\n", filenames.size());
 
   // Construct a list of colormap files
   // First scan them from /usr/share/spyview/cmaps, then ~/cmaps/ under unix
@@ -693,12 +693,12 @@ int main(int argc, char **argv)
   string user_path = userdir + DIRECTORY_SEPARATOR + "cmaps" + DIRECTORY_SEPARATOR;
   string share_path = sharedir +  DIRECTORY_SEPARATOR + "cmaps" + DIRECTORY_SEPARATOR;
   find_cmaps(share_path, "");
-  info("Loaded "_STF" color maps from %s.\n",cmapfiles.size(),share_path.c_str());
+  info("Loaded ",_STF," color maps from %s.\n",cmapfiles.size(),share_path.c_str());
 
   if(share_path != user_path)
     {
       find_cmaps(user_path, "~/");  
-      info("Loaded "_STF" color maps from %s.\n",cmapfiles.size(),user_path.c_str());
+      info("Loaded ",_STF," color maps from %s.\n",cmapfiles.size(),user_path.c_str());
     }
 
   int ind = cmapch->add("Custom",0,0,(void*)-1);
