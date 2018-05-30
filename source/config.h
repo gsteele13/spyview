@@ -47,10 +47,10 @@
 /* #undef HAVE_LIBGDI32 */
 
 /* Define to 1 if you have the `GL' library (-lGL). */
-/* #undef HAVE_LIBGL */
+#define HAVE_LIBGL 1
 
 /* Define to 1 if you have the `GLU' library (-lGLU). */
-/* #undef HAVE_LIBGLU */
+#define HAVE_LIBGLU 1
 
 /* Define to 1 if you have the `glu32' library (-lglu32). */
 /* #undef HAVE_LIBGLU32 */

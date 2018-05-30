@@ -143,7 +143,7 @@ void Gnuplot_Interface::close()
 	  if(in) fclose(in);
 	  if(out) fclose(out);
 	  kill(child,SIGTERM);
-	  wait(&child);
+	  //wait(&child); //Wait not declared?
 	}
       else
 	if(out)
